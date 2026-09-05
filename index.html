@@ -18,9 +18,10 @@
       <nav class="nav-links">
         <a class="active" href="index.html">Inicio</a>
         <a href="pages/unidades.html">Unidades</a>
-        <a data-nav="editor" href="pages/editor.html" hidden>Editor</a>
-        <a data-nav="superadmin" href="pages/superadmin.html" hidden>Superadmin</a>
-        <a data-nav="auth" href="pages/login.html">Acceso</a>
+        <a id="nav-editor" href="pages/editor.html" class="hidden">Panel Editor</a>
+        <a id="nav-admin" href="pages/superadmin.html" class="hidden">Gremio Admin</a>
+        <a id="nav-login" href="pages/login.html">Acceso</a>
+        <button id="btn-logout" class="hidden" type="button">Cerrar Sesión</button>
       </nav>
     </header>
 
@@ -77,6 +78,7 @@
 
     <footer>Curso de Arquitectura de Software · GitHub Pages · Vanilla JS</footer>
     <div id="loader" class="loader-overlay"><div class="pixel-loader"></div></div>
+    <script type="module" src="js/navbar.js"></script>
     <script type="module" src="js/main.js"></script>
   </body>
 </html>

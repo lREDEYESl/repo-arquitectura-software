@@ -144,11 +144,13 @@ img {
   gap: 0.45rem;
 }
 
-[hidden] {
+[hidden],
+.hidden {
   display: none !important;
 }
 
-.nav-links a {
+.nav-links a,
+.nav-links button {
   color: var(--text);
   padding: 0.45rem 0.75rem;
   border-radius: 999px;
@@ -156,8 +158,16 @@ img {
   font-size: 0.92rem;
 }
 
+.nav-links button {
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+}
+
 .nav-links a:hover,
-.nav-links a.active {
+.nav-links a.active,
+.nav-links button:hover {
   border-color: var(--neon-cyan);
   color: var(--neon-cyan);
   box-shadow: 0 0 16px rgba(60, 240, 255, 0.25);

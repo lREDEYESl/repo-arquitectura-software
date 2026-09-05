@@ -1,4 +1,4 @@
-import { signInWithPopup } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+import { signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
 import {
   addDoc,
   collection,
@@ -13,14 +13,12 @@ import {
 import { getDownloadURL, ref, uploadBytes } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-storage.js";
 import { auth, db, googleProvider, storage } from "./firebase-config.js";
 import {
-  bindNavbar,
+  getUserRoleByEmail,
   requireRoles,
   setLoader,
   showAchievement,
   watchAuth,
 } from "./auth-guard.js";
-
-bindNavbar();
 
 const page = document.body.dataset.page;
 
@@ -114,7 +112,17 @@ function initLogin() {
     setLoader(true);
     try {
       const result = await signInWithPopup(auth, googleProvider);
-      showAchievement("Bienvenido", `Sesión iniciada como ${result.user.displayName || result.user.email}.`);
+      const rol = await getUserRoleByEmail(result.user.email);
+      if (rol === "admin") {
+        location.href = "superadmin.html";
+        return;
+      }
+      if (rol === "editor") {
+        location.href = "editor.html";
+        return;
+      }
+      await signOut(auth);
+      alert("Error: No tienes rango en el gremio. Envía una solicitud de acceso primero.");
     } catch (error) {
       showAchievement("Login fallido", "No se pudo completar el acceso con Google.", "error");
     } finally {
@@ -137,7 +145,7 @@ function initLogin() {
 
 async function initEditor() {
   setLoader(true);
-  const session = await requireRoles(["editor", "superadmin"]);
+  const session = await requireRoles(["editor", "admin"]);
   setLoader(false);
   const form = document.getElementById("form-entrega");
   const who = document.getElementById("editor-user");
@@ -179,7 +187,7 @@ async function initEditor() {
 
 async function initSuperadmin() {
   setLoader(true);
-  await requireRoles(["superadmin"]);
+  await requireRoles(["admin"]);
   setLoader(false);
   await loadSolicitudes();
 }
@@ -208,7 +216,7 @@ async function loadSolicitudes() {
         <p class="muted">${escapeHtml(data.motivo || "")}</p>
         <div class="stats">
           <button class="btn" data-action="aprobar" data-rol="editor">Aprobar editor</button>
-          <button class="btn btn-cyan" data-action="aprobar" data-rol="superadmin">Aprobar admin</button>
+          <button class="btn btn-cyan" data-action="aprobar" data-rol="admin">Aprobar admin</button>
           <button class="btn btn-danger" data-action="rechazar">Rechazar</button>
         </div>`;
 

@@ -1,5 +1,5 @@
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
-import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+import { collection, doc, getDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 import { auth, db } from "./firebase-config.js";
 
 export const ROOT = location.pathname.includes("/pages/") ? "../" : "./";
@@ -23,11 +23,33 @@ export function setLoader(active) {
   if (overlay) overlay.classList.toggle("active", Boolean(active));
 }
 
+function normalizeRole(rol) {
+  if (!rol) return null;
+  if (rol === "superadmin") return "admin";
+  return rol;
+}
+
+function roleFromData(data) {
+  return normalizeRole(data?.rol || data?.role || null);
+}
+
 export async function getUserRole(uid) {
+  if (!uid) return null;
   const snap = await getDoc(doc(db, "roles_usuarios", uid));
   if (!snap.exists()) return null;
-  const data = snap.data();
-  return data.rol || data.role || null;
+  return roleFromData(snap.data());
+}
+
+export async function getUserRoleByEmail(email) {
+  if (!email) return null;
+
+  const byEmailId = await getDoc(doc(db, "roles_usuarios", email));
+  if (byEmailId.exists()) return roleFromData(byEmailId.data());
+
+  const snap = await getDocs(query(collection(db, "roles_usuarios"), where("email", "==", email)));
+  if (!snap.empty) return roleFromData(snap.docs[0].data());
+
+  return null;
 }
 
 export function loginUrl() {
@@ -43,7 +65,7 @@ export function requireRoles(allowedRoles = []) {
           location.href = loginUrl();
           return;
         }
-        const rol = await getUserRole(user.uid);
+        const rol = (await getUserRoleByEmail(user.email)) || (await getUserRole(user.uid));
         if (!rol || !allowedRoles.includes(rol)) {
           showAchievement("Permiso insuficiente", "Tu rango no puede entrar a este panel.", "error");
           location.href = loginUrl();
@@ -63,7 +85,7 @@ export function watchAuth(callback) {
     let rol = null;
     if (user) {
       try {
-        rol = await getUserRole(user.uid);
+        rol = (await getUserRoleByEmail(user.email)) || (await getUserRole(user.uid));
       } catch {
         rol = null;
       }
@@ -75,34 +97,5 @@ export function watchAuth(callback) {
 export async function logoutPlayer() {
   await signOut(auth);
   showAchievement("Sesión cerrada", "Has salido del gremio. ¡Hasta la próxima misión!");
-  location.href = loginUrl();
-}
-
-export function bindNavbar() {
-  const toggle = document.querySelector(".nav-toggle");
-  const nav = document.querySelector(".navbar");
-  toggle?.addEventListener("click", () => nav.classList.toggle("open"));
-
-  const adminLink = document.querySelector("[data-nav='superadmin']");
-  const editorLink = document.querySelector("[data-nav='editor']");
-  const authLink = document.querySelector("[data-nav='auth']");
-
-  watchAuth(({ user, rol }) => {
-    if (adminLink) adminLink.hidden = rol !== "superadmin";
-    if (editorLink) editorLink.hidden = !(rol === "editor" || rol === "superadmin");
-    if (authLink) {
-      if (user) {
-        authLink.textContent = "Salir";
-        authLink.href = "#";
-        authLink.onclick = (event) => {
-          event.preventDefault();
-          logoutPlayer();
-        };
-      } else {
-        authLink.textContent = "Acceso";
-        authLink.href = `${ROOT}pages/login.html`;
-        authLink.onclick = null;
-      }
-    }
-  });
+  location.href = `${ROOT}index.html`;
 }

@@ -18,16 +18,17 @@
       <nav class="nav-links">
         <a href="../index.html">Inicio</a>
         <a href="unidades.html">Unidades</a>
-        <a class="active" data-nav="editor" href="editor.html">Editor</a>
-        <a data-nav="superadmin" href="superadmin.html" hidden>Superadmin</a>
-        <a data-nav="auth" href="login.html">Acceso</a>
+        <a id="nav-editor" class="active hidden" href="editor.html">Panel Editor</a>
+        <a id="nav-admin" href="superadmin.html" class="hidden">Gremio Admin</a>
+        <a id="nav-login" href="login.html">Acceso</a>
+        <button id="btn-logout" class="hidden" type="button">Cerrar Sesión</button>
       </nav>
     </header>
 
     <main class="page-wrap">
       <p class="kicker">Zona protegida</p>
       <h1>Taller de entregas</h1>
-      <p class="muted">Panel para roles <strong>editor</strong> y <strong>superadmin</strong>. Si no hay permiso, el guardia te manda al menú Start.</p>
+      <p class="muted">Panel para roles <strong>editor</strong> y <strong>admin</strong>. Si no hay permiso, el guardia te manda al menú Start.</p>
       <p id="editor-user" class="badge"><i class="fa-solid fa-id-badge"></i> Verificando rango...</p>
 
       <section class="form-box">
@@ -54,6 +55,7 @@
 
     <footer>Storage + Firestore · tareas_entregadas</footer>
     <div id="loader" class="loader-overlay active"><div class="pixel-loader"></div></div>
+    <script type="module" src="../js/navbar.js"></script>
     <script type="module" src="../js/main.js"></script>
   </body>
 </html>

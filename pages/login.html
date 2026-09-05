@@ -18,9 +18,10 @@
       <nav class="nav-links">
         <a href="../index.html">Inicio</a>
         <a href="unidades.html">Unidades</a>
-        <a data-nav="editor" href="editor.html" hidden>Editor</a>
-        <a data-nav="superadmin" href="superadmin.html" hidden>Superadmin</a>
-        <a class="active" data-nav="auth" href="login.html">Acceso</a>
+        <a id="nav-editor" href="editor.html" class="hidden">Panel Editor</a>
+        <a id="nav-admin" href="superadmin.html" class="hidden">Gremio Admin</a>
+        <a id="nav-login" class="active" href="login.html">Acceso</a>
+        <button id="btn-logout" class="hidden" type="button">Cerrar Sesión</button>
       </nav>
     </header>
 
@@ -56,6 +57,7 @@
 
     <footer>Zona de acceso · Firebase Auth</footer>
     <div id="loader" class="loader-overlay"><div class="pixel-loader"></div></div>
+    <script type="module" src="../js/navbar.js"></script>
     <script type="module" src="../js/main.js"></script>
   </body>
 </html>

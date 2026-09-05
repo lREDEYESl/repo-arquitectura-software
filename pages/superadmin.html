@@ -18,9 +18,10 @@
       <nav class="nav-links">
         <a href="../index.html">Inicio</a>
         <a href="unidades.html">Unidades</a>
-        <a data-nav="editor" href="editor.html" hidden>Editor</a>
-        <a class="active" data-nav="superadmin" href="superadmin.html">Superadmin</a>
-        <a data-nav="auth" href="login.html">Acceso</a>
+        <a id="nav-editor" href="editor.html" class="hidden">Panel Editor</a>
+        <a id="nav-admin" class="active hidden" href="superadmin.html">Gremio Admin</a>
+        <a id="nav-login" href="login.html">Acceso</a>
+        <button id="btn-logout" class="hidden" type="button">Cerrar Sesión</button>
       </nav>
     </header>
 
@@ -28,7 +29,7 @@
       <p class="kicker">Cámara del maestro</p>
       <h1>Solicitudes de acceso</h1>
       <p class="muted">
-        Solo el rango <strong>superadmin</strong> puede abrir este libro. Aprueba o rechaza peticiones
+        Solo el rango <strong>admin</strong> puede abrir este libro. Aprueba o rechaza peticiones
         guardadas en <code>solicitudes_acceso</code>. Los roles vivos viven en <code>roles_usuarios</code>
         (documento = UID de Firebase Auth).
       </p>
@@ -37,6 +38,7 @@
 
     <footer>Panel superadmin · Glassmorphism RPG</footer>
     <div id="loader" class="loader-overlay active"><div class="pixel-loader"></div></div>
+    <script type="module" src="../js/navbar.js"></script>
     <script type="module" src="../js/main.js"></script>
   </body>
 </html>
