@@ -3,22 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Arquitectura de Software · Perfil de Jugador</title>
+    <title>Base del gremio · Perfil de Jugador</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="../css/style.css" />
   </head>
-  <body data-page="inicio" data-guard="public">
+  <body data-page="index_admin" data-guard="staff">
     <div class="scanlines"></div>
     <header class="navbar">
-      <a class="brand" href="index.html"><i class="fa-solid fa-shield-halved"></i> SoftArch RPG</a>
+      <a class="brand" href="index_admin.html"><i class="fa-solid fa-shield-halved"></i> SoftArch RPG</a>
       <button class="nav-toggle" aria-label="Abrir menú"><i class="fa-solid fa-bars"></i></button>
       <nav class="nav-links">
-        <a class="active" href="index.html">Inicio</a>
-        <a href="pages/unidades.html">Unidades</a>
-        <a href="pages/login.html">Acceso</a>
+        <a class="active" href="index_admin.html">Inicio</a>
+        <a href="unidades_admin.html">Unidades</a>
+        <a href="editor.html">Panel Editor</a>
+        <a id="nav-admin" href="superadmin.html" class="hidden">Gremio Admin</a>
+        <button id="btn-logout" type="button">Cerrar Sesión</button>
       </nav>
     </header>
 
@@ -26,11 +28,11 @@
       <section class="hero glass pixel-frame">
         <div class="avatar" aria-hidden="true"><i class="fa-solid fa-user-ninja"></i></div>
         <div>
-          <p class="kicker">Perfil de jugador</p>
+          <p class="kicker">Base del gremio</p>
           <h1>Rogger Josue Palma Baldeón</h1>
           <p>
-            Arquitecto en formación. Explora sistemas como si fueran mazmorras: cada capa es una sala,
-            cada contrato una llave y cada atributo de calidad un hechizo que hay que mantener en cooldown.
+            Zona protegida para editores y administradores. Desde aquí puedes saltar al mapa de unidades
+            o al taller de artefactos sin cruzar el menú público.
           </p>
           <div class="stats">
             <span class="badge"><i class="fa-solid fa-graduation-cap"></i> Arquitectura de Software</span>
@@ -73,9 +75,9 @@
       </section>
     </main>
 
-    <footer>Curso de Arquitectura de Software · GitHub Pages · Vanilla JS</footer>
-    <div id="loader" class="loader-overlay"><div class="pixel-loader"></div></div>
-    <script type="module" src="js/navbar.js"></script>
-    <script type="module" src="js/main.js"></script>
+    <footer>Zona staff · Solo rangos editor y admin</footer>
+    <div id="loader" class="loader-overlay active"><div class="pixel-loader"></div></div>
+    <script type="module" src="../js/navbar.js"></script>
+    <script type="module" src="../js/main.js"></script>
   </body>
 </html>

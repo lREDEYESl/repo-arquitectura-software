@@ -6,11 +6,11 @@
     <title>Acceso · Menú Start</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Press+Start+2P&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <link rel="stylesheet" href="../css/style.css" />
   </head>
-  <body data-page="login">
+  <body data-page="login" data-guard="public">
     <div class="scanlines"></div>
     <header class="navbar">
       <a class="brand" href="../index.html"><i class="fa-solid fa-shield-halved"></i> SoftArch RPG</a>
@@ -18,10 +18,7 @@
       <nav class="nav-links">
         <a href="../index.html">Inicio</a>
         <a href="unidades.html">Unidades</a>
-        <a id="nav-editor" href="editor.html" class="hidden">Panel Editor</a>
-        <a id="nav-admin" href="superadmin.html" class="hidden">Gremio Admin</a>
-        <a id="nav-login" class="active" href="login.html">Acceso</a>
-        <button id="btn-logout" class="hidden" type="button">Cerrar Sesión</button>
+        <a class="active" href="login.html">Acceso</a>
       </nav>
     </header>
 
@@ -31,13 +28,13 @@
       <p id="login-status" class="muted">Sin sesión. Elige un héroe con Google o solicita acceso.</p>
 
       <div class="grid grid-2">
-        <section class="form-box">
+        <section class="form-box pixel-frame">
           <h2>Continuar partida</h2>
-          <p class="muted">Inicia sesión con Google para entrar a zonas protegidas según tu rango en <code>roles_usuarios</code>.</p>
+          <p class="muted">Inicia sesión con Google para entrar a la base del gremio según tu rango en <code>roles_usuarios</code>.</p>
           <button id="btn-google" class="btn" type="button"><i class="fa-brands fa-google"></i> Login con Google</button>
         </section>
 
-        <section class="form-box">
+        <section class="form-box pixel-frame">
           <h2>Solicitar acceso al gremio</h2>
           <form id="form-solicitud">
             <label class="field">Nombre

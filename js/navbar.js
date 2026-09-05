@@ -1,6 +1,6 @@
-import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
 import { auth } from "./firebase-config.js";
-import { ROOT, getUserRoleByEmail } from "./auth-guard.js";
+import { ROOT, getUserRoleByEmail, initPageGuard, logoutPlayer } from "./auth-guard.js";
 
 function setHidden(el, hidden) {
   if (!el) return;
@@ -12,50 +12,39 @@ function bindNavbar() {
   const nav = document.querySelector(".navbar");
   toggle?.addEventListener("click", () => nav.classList.toggle("open"));
 
-  const navEditor = document.getElementById("nav-editor");
   const navAdmin = document.getElementById("nav-admin");
-  const navLogin = document.getElementById("nav-login");
   const btnLogout = document.getElementById("btn-logout");
 
-  btnLogout?.addEventListener("click", async () => {
-    await signOut(auth);
-    location.href = `${ROOT}index.html`;
+  btnLogout?.addEventListener("click", () => logoutPlayer());
+
+  initPageGuard().finally(() => {
+    if (document.body.dataset.page !== "editor" && document.body.dataset.page !== "superadmin") {
+      document.getElementById("loader")?.classList.remove("active");
+    }
   });
 
   onAuthStateChanged(auth, async (user) => {
+    const page = document.body.dataset.page;
+    const guard = document.body.dataset.guard;
+
     if (!user) {
-      setHidden(navLogin, false);
-      setHidden(navEditor, true);
       setHidden(navAdmin, true);
-      setHidden(btnLogout, true);
       return;
     }
 
     const rol = await getUserRoleByEmail(user.email);
 
-    if (rol === "admin") {
-      setHidden(navEditor, false);
-      setHidden(navAdmin, false);
-      setHidden(btnLogout, false);
-      setHidden(navLogin, true);
+    if (guard === "public" && (page === "inicio" || page === "unidades") && (rol === "admin" || rol === "editor")) {
+      location.href = page === "unidades" ? `${ROOT}pages/unidades_admin.html` : `${ROOT}pages/index_admin.html`;
       return;
     }
 
-    if (rol === "editor") {
-      setHidden(navEditor, false);
-      setHidden(btnLogout, false);
-      setHidden(navAdmin, true);
-      setHidden(navLogin, true);
+    if (page === "login" && (rol === "admin" || rol === "editor")) {
+      location.href = `${ROOT}pages/index_admin.html`;
       return;
     }
 
-    setHidden(navEditor, true);
-    setHidden(navAdmin, true);
-    setHidden(btnLogout, false);
-    setHidden(navLogin, true);
-    if (document.body.dataset.page !== "login") {
-      alert("Tu acceso aún está siendo evaluado por el gremio");
-    }
+    setHidden(navAdmin, rol !== "admin");
   });
 }
 

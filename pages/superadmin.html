@@ -6,22 +6,21 @@
     <title>Superadmin · Libro del gremio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Press+Start+2P&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <link rel="stylesheet" href="../css/style.css" />
   </head>
-  <body data-page="superadmin">
+  <body data-page="superadmin" data-guard="admin">
     <div class="scanlines"></div>
     <header class="navbar">
-      <a class="brand" href="../index.html"><i class="fa-solid fa-shield-halved"></i> SoftArch RPG</a>
+      <a class="brand" href="index_admin.html"><i class="fa-solid fa-shield-halved"></i> SoftArch RPG</a>
       <button class="nav-toggle" aria-label="Abrir menú"><i class="fa-solid fa-bars"></i></button>
       <nav class="nav-links">
-        <a href="../index.html">Inicio</a>
-        <a href="unidades.html">Unidades</a>
-        <a id="nav-editor" href="editor.html" class="hidden">Panel Editor</a>
-        <a id="nav-admin" class="active hidden" href="superadmin.html">Gremio Admin</a>
-        <a id="nav-login" href="login.html">Acceso</a>
-        <button id="btn-logout" class="hidden" type="button">Cerrar Sesión</button>
+        <a href="index_admin.html">Inicio</a>
+        <a href="unidades_admin.html">Unidades</a>
+        <a href="editor.html">Panel Editor</a>
+        <a id="nav-admin" class="active" href="superadmin.html">Gremio Admin</a>
+        <button id="btn-logout" type="button">Cerrar Sesión</button>
       </nav>
     </header>
 
@@ -29,9 +28,9 @@
       <p class="kicker">Cámara del maestro</p>
       <h1>Solicitudes de acceso</h1>
       <p class="muted">
-        Solo el rango <strong>admin</strong> puede abrir este libro. Aprueba o rechaza peticiones
-        guardadas en <code>solicitudes_acceso</code>. Los roles vivos viven en <code>roles_usuarios</code>
-        (documento = UID de Firebase Auth).
+        Solo el rango <strong>admin</strong> abre este libro. Aprobar crea el documento en
+        <code>roles_usuarios</code> usando el correo como ID y borra la petición de
+        <code>solicitudes_acceso</code>.
       </p>
       <div id="lista-solicitudes" class="grid"></div>
     </main>

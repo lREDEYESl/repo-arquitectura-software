@@ -2,19 +2,19 @@ import { signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDocs,
   orderBy,
   query,
   serverTimestamp,
   setDoc,
-  updateDoc,
 } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 import { getDownloadURL, ref, uploadBytes } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-storage.js";
 import { auth, db, googleProvider, storage } from "./firebase-config.js";
 import {
   getUserRoleByEmail,
-  requireRoles,
+  initPageGuard,
   setLoader,
   showAchievement,
   watchAuth,
@@ -22,7 +22,7 @@ import {
 
 const page = document.body.dataset.page;
 
-if (page === "unidades") {
+if (page === "unidades" || page === "unidades_admin") {
   renderTareas();
 }
 
@@ -38,14 +38,36 @@ if (page === "superadmin") {
   initSuperadmin();
 }
 
+function fileUrl(file) {
+  return file.urlArchivo || file.url || "#";
+}
+
+function formatFecha(value) {
+  if (!value) return "";
+  try {
+    const date = value.toDate ? value.toDate() : new Date(value);
+    if (Number.isNaN(date.getTime())) return "";
+    return date.toLocaleDateString("es-ES");
+  } catch {
+    return "";
+  }
+}
+
 async function renderTareas() {
   const slots = [1, 2, 3, 4].map((n) => document.getElementById(`tareas-unidad-${n}`));
   slots.forEach((slot) => {
-    if (slot) slot.innerHTML = "<p class='muted'>Cargando bitácora de entregas...</p>";
+    if (slot) slot.innerHTML = "<p class='muted'>Cargando bitácora de misiones...</p>";
   });
 
   try {
-    const snap = await getDocs(query(collection(db, "tareas_entregadas"), orderBy("creadoEn", "desc")));
+    let snap;
+    try {
+      snap = await getDocs(query(collection(db, "tareas_entregadas"), orderBy("fecha", "desc")));
+    } catch (indexError) {
+      console.warn("Índice fecha no disponible, leyendo sin orderBy:", indexError);
+      snap = await getDocs(collection(db, "tareas_entregadas"));
+    }
+
     const byUnit = { 1: [], 2: [], 3: [], 4: [] };
     snap.forEach((item) => {
       const data = item.data();
@@ -61,19 +83,22 @@ async function renderTareas() {
         return;
       }
       slot.innerHTML = files
-        .map(
-          (file) => `
-          <article class="file-chip">
-            <div>
-              <strong>${escapeHtml(file.nombreArchivo || "Archivo")}</strong>
-              <div class="muted">Semana ${escapeHtml(String(file.semana || "-"))} · ${escapeHtml(file.autor || "aventurero")}</div>
-            </div>
-            <a class="btn btn-cyan" href="${file.url}" target="_blank" rel="noopener">Abrir</a>
-          </article>`
-        )
+        .map((file) => {
+          const fecha = formatFecha(file.fecha || file.creadoEn);
+          return `
+          <article class="quest-card">
+            <p class="kicker">Semana ${escapeHtml(String(file.semana || "-"))}${fecha ? ` · ${escapeHtml(fecha)}` : ""}</p>
+            <h3><i class="fa-solid fa-scroll"></i> ${escapeHtml(file.nombreArchivo || "Archivo")}</h3>
+            <p>${escapeHtml(file.descripcion || "Sin descripción de misión.")}</p>
+            <a class="btn btn-cyan" href="${fileUrl(file)}" target="_blank" rel="noopener">
+              <i class="fa-solid fa-download"></i> Descargar / Ver
+            </a>
+          </article>`;
+        })
         .join("");
     });
   } catch (error) {
+    console.error("Error al renderizar tareas_entregadas:", error);
     slots.forEach((slot) => {
       if (slot) {
         slot.innerHTML =
@@ -100,9 +125,10 @@ function initLogin() {
         creadoEn: serverTimestamp(),
       });
       requestForm.reset();
-      showAchievement("Solicitud enviada", "El maestro del gremio revisará tu petición.");
+      showAchievement("Misión Cumplida", "El maestro del gremio revisará tu petición.");
     } catch (error) {
-      showAchievement("No se envió la solicitud", "Revisa la configuración de Firestore.", "error");
+      console.error("Error al enviar solicitud de acceso:", error);
+      showAchievement("Misión Fallida", "Revisa la configuración de Firestore.", "error");
     } finally {
       setLoader(false);
     }
@@ -114,17 +140,18 @@ function initLogin() {
       const result = await signInWithPopup(auth, googleProvider);
       const rol = await getUserRoleByEmail(result.user.email);
       if (rol === "admin") {
-        location.href = "superadmin.html";
+        location.href = "index_admin.html";
         return;
       }
       if (rol === "editor") {
-        location.href = "editor.html";
+        location.href = "index_admin.html";
         return;
       }
       await signOut(auth);
       alert("Error: No tienes rango en el gremio. Envía una solicitud de acceso primero.");
     } catch (error) {
-      showAchievement("Login fallido", "No se pudo completar el acceso con Google.", "error");
+      console.error("Error en login con Google:", error);
+      showAchievement("Misión Fallida", "No se pudo completar el acceso con Google.", "error");
     } finally {
       setLoader(false);
     }
@@ -143,20 +170,65 @@ function initLogin() {
   });
 }
 
+function bindFilePreview(form) {
+  const input = form.querySelector('input[name="archivo"]');
+  const preview = document.getElementById("file-preview");
+  const previewImage = document.getElementById("preview-image");
+  const previewFile = document.getElementById("preview-file");
+  const previewName = document.getElementById("preview-name");
+  if (!input || !preview) return;
+
+  input.addEventListener("change", () => {
+    const file = input.files[0];
+    if (!file) {
+      preview.classList.add("hidden");
+      previewImage?.classList.add("hidden");
+      previewFile?.classList.add("hidden");
+      if (previewImage) previewImage.src = "";
+      return;
+    }
+
+    preview.classList.remove("hidden");
+    if (file.type.startsWith("image/")) {
+      previewFile?.classList.add("hidden");
+      previewImage?.classList.remove("hidden");
+      previewImage.src = URL.createObjectURL(file);
+    } else {
+      previewImage?.classList.add("hidden");
+      previewFile?.classList.remove("hidden");
+      if (previewName) previewName.textContent = file.name;
+      const icon = previewFile?.querySelector("i");
+      if (icon) {
+        icon.className = file.type.includes("pdf")
+          ? "fa-solid fa-file-pdf"
+          : "fa-solid fa-file-lines";
+      }
+    }
+  });
+}
+
 async function initEditor() {
   setLoader(true);
-  const session = await requireRoles(["editor", "admin"]);
+  const session = await initPageGuard();
   setLoader(false);
+  if (!session) return;
+
   const form = document.getElementById("form-entrega");
   const who = document.getElementById("editor-user");
   if (who) who.textContent = `${session.user.email} · ${session.rol}`;
+  bindFilePreview(form);
 
   form?.addEventListener("submit", async (event) => {
     event.preventDefault();
     const payload = Object.fromEntries(new FormData(form));
     const file = form.archivo.files[0];
+    const descripcion = String(payload.descripcion || "").trim();
     if (!file) {
-      showAchievement("Falta el artefacto", "Selecciona un archivo para subir.", "error");
+      showAchievement("Misión Fallida", "Selecciona un archivo para subir.", "error");
+      return;
+    }
+    if (!descripcion) {
+      showAchievement("Misión Fallida", "La descripción de la misión es obligatoria.", "error");
       return;
     }
 
@@ -165,20 +237,21 @@ async function initEditor() {
       const path = `tareas/${session.user.uid}/unidad-${payload.unidad}/semana-${payload.semana}/${Date.now()}-${file.name}`;
       const fileRef = ref(storage, path);
       await uploadBytes(fileRef, file);
-      const url = await getDownloadURL(fileRef);
+      const urlArchivo = await getDownloadURL(fileRef);
       await addDoc(collection(db, "tareas_entregadas"), {
-        uid: session.user.uid,
-        autor: session.user.displayName || session.user.email,
         unidad: Number(payload.unidad),
         semana: Number(payload.semana),
         nombreArchivo: file.name,
-        url,
-        creadoEn: serverTimestamp(),
+        urlArchivo,
+        descripcion,
+        fecha: serverTimestamp(),
       });
       form.reset();
-      showAchievement("Entrega registrada", "El archivo quedó guardado en Storage y en la bitácora.");
+      document.getElementById("file-preview")?.classList.add("hidden");
+      showAchievement("Misión Cumplida", "El artefacto quedó guardado en el baúl del gremio.");
     } catch (error) {
-      showAchievement("Subida fallida", "Verifica Storage, reglas y tu sesión.", "error");
+      console.error("Error al subir tarea:", error);
+      showAchievement("Misión Fallida", "Verifica Storage, reglas y tu sesión.", "error");
     } finally {
       setLoader(false);
     }
@@ -187,8 +260,9 @@ async function initEditor() {
 
 async function initSuperadmin() {
   setLoader(true);
-  await requireRoles(["admin"]);
+  const session = await initPageGuard();
   setLoader(false);
+  if (!session) return;
   await loadSolicitudes();
 }
 
@@ -215,8 +289,8 @@ async function loadSolicitudes() {
         <p>${escapeHtml(data.correo || "")}</p>
         <p class="muted">${escapeHtml(data.motivo || "")}</p>
         <div class="stats">
-          <button class="btn" data-action="aprobar" data-rol="editor">Aprobar editor</button>
-          <button class="btn btn-cyan" data-action="aprobar" data-rol="admin">Aprobar admin</button>
+          <button class="btn" data-action="aprobar" data-rol="editor">Aprobar Editor</button>
+          <button class="btn btn-cyan" data-action="aprobar" data-rol="admin">Aprobar Admin</button>
           <button class="btn btn-danger" data-action="rechazar">Rechazar</button>
         </div>`;
 
@@ -226,6 +300,7 @@ async function loadSolicitudes() {
       list.appendChild(card);
     });
   } catch (error) {
+    console.error("Error al leer solicitudes_acceso:", error);
     list.innerHTML = "<p class='muted'>No se pudieron leer las solicitudes. Revisa índices y reglas de Firestore.</p>";
   }
 }
@@ -233,37 +308,35 @@ async function loadSolicitudes() {
 async function handleSolicitud(id, data, action, rol) {
   setLoader(true);
   try {
-    const refDoc = doc(db, "solicitudes_acceso", id);
+    const solicitudRef = doc(db, "solicitudes_acceso", id);
     if (action === "rechazar") {
-      await updateDoc(refDoc, { estado: "rechazada" });
-      showAchievement("Solicitud rechazada", `${data.nombre} no entra al gremio.`);
+      await deleteDoc(solicitudRef);
+      showAchievement("Misión Cumplida", `${data.nombre} no entra al gremio.`);
     } else {
-      const uidGuess = data.uid;
-      if (uidGuess) {
-        await setDoc(doc(db, "roles_usuarios", uidGuess), {
-          email: data.correo,
-          rol,
-          nombre: data.nombre,
-          actualizadoEn: serverTimestamp(),
-        });
-      } else {
-        await addDoc(collection(db, "roles_pendientes"), {
-          correo: data.correo,
-          rol,
-          nombre: data.nombre,
-          creadoEn: serverTimestamp(),
-        });
-        showAchievement(
-          "Aprobación registrada",
-          "Cuando esa cuenta inicie sesión, asigna el rol en roles_usuarios con su UID."
-        );
+      const correo = String(data.correo || "").trim();
+      if (!correo) {
+        throw new Error("La solicitud no tiene correo para usar como ID en roles_usuarios.");
       }
-      await updateDoc(refDoc, { estado: "aprobada", rolAsignado: rol });
-      showAchievement("Aspirante aceptado", `${data.nombre} queda como ${rol}.`);
+      await setDoc(doc(db, "roles_usuarios", correo), {
+        email: correo,
+        rol,
+        nombre: data.nombre || "",
+        actualizadoEn: serverTimestamp(),
+      });
+      await deleteDoc(solicitudRef);
+      showAchievement("Misión Cumplida", `${data.nombre} queda como ${rol}.`);
     }
     await loadSolicitudes();
   } catch (error) {
-    showAchievement("Acción fallida", "No se pudo actualizar la solicitud.", "error");
+    console.error("Error al procesar solicitud de acceso:", error, {
+      id,
+      action,
+      rol,
+      correo: data?.correo,
+      code: error?.code,
+      message: error?.message,
+    });
+    showAchievement("Misión Fallida", "No se pudo actualizar la solicitud. Revisa la consola.", "error");
   } finally {
     setLoader(false);
   }

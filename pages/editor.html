@@ -6,32 +6,31 @@
     <title>Editor · Taller de artefactos</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Press+Start+2P&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <link rel="stylesheet" href="../css/style.css" />
   </head>
-  <body data-page="editor">
+  <body data-page="editor" data-guard="staff">
     <div class="scanlines"></div>
     <header class="navbar">
-      <a class="brand" href="../index.html"><i class="fa-solid fa-shield-halved"></i> SoftArch RPG</a>
+      <a class="brand" href="index_admin.html"><i class="fa-solid fa-shield-halved"></i> SoftArch RPG</a>
       <button class="nav-toggle" aria-label="Abrir menú"><i class="fa-solid fa-bars"></i></button>
       <nav class="nav-links">
-        <a href="../index.html">Inicio</a>
-        <a href="unidades.html">Unidades</a>
-        <a id="nav-editor" class="active hidden" href="editor.html">Panel Editor</a>
+        <a href="index_admin.html">Inicio</a>
+        <a href="unidades_admin.html">Unidades</a>
+        <a class="active" href="editor.html">Panel Editor</a>
         <a id="nav-admin" href="superadmin.html" class="hidden">Gremio Admin</a>
-        <a id="nav-login" href="login.html">Acceso</a>
-        <button id="btn-logout" class="hidden" type="button">Cerrar Sesión</button>
+        <button id="btn-logout" type="button">Cerrar Sesión</button>
       </nav>
     </header>
 
     <main class="page-wrap">
       <p class="kicker">Zona protegida</p>
       <h1>Taller de entregas</h1>
-      <p class="muted">Panel para roles <strong>editor</strong> y <strong>admin</strong>. Si no hay permiso, el guardia te manda al menú Start.</p>
+      <p class="muted">Solo rangos <strong>editor</strong> y <strong>admin</strong>. El guardia verifica <code>roles_usuarios</code> por correo.</p>
       <p id="editor-user" class="badge"><i class="fa-solid fa-id-badge"></i> Verificando rango...</p>
 
-      <section class="form-box">
+      <section class="form-box pixel-frame">
         <h2>Subir artefacto</h2>
         <form id="form-entrega">
           <label class="field">Unidad / mundo
@@ -45,9 +44,20 @@
           <label class="field">Semana
             <input name="semana" type="number" min="1" max="16" required placeholder="1" />
           </label>
-          <label class="field">Archivo
-            <input name="archivo" type="file" required />
+          <label class="field">Descripción de la tarea / misión
+            <textarea name="descripcion" rows="4" required placeholder="Describe la misión que entrega este artefacto."></textarea>
           </label>
+          <label class="field">Archivo
+            <input name="archivo" type="file" accept="image/*,.pdf,.doc,.docx,.ppt,.pptx,.txt" required />
+          </label>
+          <div id="file-preview" class="file-preview hidden">
+            <p class="kicker">Vista previa</p>
+            <img id="preview-image" class="hidden" alt="Miniatura del artefacto" />
+            <div id="preview-file" class="preview-file hidden">
+              <i class="fa-solid fa-scroll"></i>
+              <span id="preview-name"></span>
+            </div>
+          </div>
           <button class="btn" type="submit">Guardar en el baúl</button>
         </form>
       </section>
