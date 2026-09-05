@@ -13,8 +13,8 @@
   --radius: 18px;
   --shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
   --font-pixel: "Press Start 2P", system-ui, sans-serif;
-  --font-retro: VT323, "Press Start 2P", monospace;
-  --font-body: Inter, system-ui, sans-serif;
+  --font-retro: "Press Start 2P", system-ui, sans-serif;
+  --font-body: Inter, Roboto, system-ui, sans-serif;
 }
 
 *,
@@ -25,6 +25,26 @@
 
 html {
   scroll-behavior: smooth;
+}
+
+html,
+body,
+button,
+a,
+input,
+textarea,
+select,
+label,
+p,
+li,
+span,
+small,
+strong,
+div,
+footer,
+header,
+nav {
+  font-family: var(--font-body);
 }
 
 body {
@@ -70,9 +90,10 @@ h2 {
 }
 
 h3 {
-  font-family: var(--font-retro);
-  font-size: clamp(1.35rem, 2.4vw, 1.8rem);
+  font-family: var(--font-pixel);
+  font-size: clamp(0.72rem, 1.6vw, 0.92rem);
   letter-spacing: 0.04em;
+  line-height: 1.55;
   color: var(--gold);
   margin: 0.35rem 0 0.7rem;
 }
@@ -88,8 +109,8 @@ button {
 }
 
 code {
-  font-family: var(--font-retro);
-  font-size: 1.15em;
+  font-family: var(--font-body);
+  font-size: 0.92em;
   color: var(--neon-green);
   text-shadow: 0 0 8px rgba(57, 255, 154, 0.35);
 }
@@ -177,9 +198,9 @@ img {
   padding: 0.45rem 0.75rem;
   border-radius: 4px;
   border: 1px solid transparent;
-  font-family: var(--font-retro);
-  font-size: 1.2rem;
-  letter-spacing: 0.04em;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  letter-spacing: 0.02em;
 }
 
 .nav-links button {
@@ -310,11 +331,15 @@ img {
 
 .kicker {
   color: var(--neon-cyan);
-  font-family: var(--font-retro);
+  font-family: var(--font-pixel);
   text-transform: uppercase;
-  letter-spacing: 0.16em;
-  font-size: 1.15rem;
+  letter-spacing: 0.12em;
+  font-size: 0.62rem;
   margin-bottom: 0.4rem;
+}
+
+a.btn {
+  font-family: var(--font-pixel);
 }
 
 .btn {
@@ -356,6 +381,11 @@ img {
   color: var(--neon-purple);
 }
 
+.btn-purple:hover {
+  background: var(--neon-purple);
+  color: #1a0b24;
+}
+
 .btn-danger {
   border-color: var(--danger);
   color: var(--danger);
@@ -370,8 +400,8 @@ img {
   display: grid;
   gap: 0.4rem;
   margin-bottom: 0.9rem;
-  font-family: var(--font-retro);
-  font-size: 1.2rem;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
   color: var(--neon-cyan);
 }
 
@@ -412,6 +442,72 @@ img {
   margin-top: 0.4rem;
 }
 
+.quest-thumb {
+  width: 100%;
+  max-height: 220px;
+  object-fit: contain;
+  border: 2px solid var(--neon-cyan);
+  box-shadow: 0 0 18px rgba(60, 240, 255, 0.25);
+  background: rgba(8, 8, 18, 0.7);
+  margin: 0.4rem 0 0.8rem;
+}
+
+.quest-viewer {
+  margin: 0.5rem 0 0.9rem;
+  border: 1px solid rgba(192, 132, 252, 0.35);
+  border-radius: 8px;
+  background: rgba(8, 8, 18, 0.55);
+  padding: 0.55rem 0.7rem;
+}
+
+.quest-viewer summary {
+  cursor: pointer;
+  font-family: var(--font-body);
+  color: var(--neon-cyan);
+  list-style: none;
+}
+
+.quest-viewer iframe {
+  width: 100%;
+  min-height: 320px;
+  margin-top: 0.6rem;
+  border: 2px solid var(--neon-purple);
+  background: #0c0c16;
+}
+
+.quest-admin {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.edit-form {
+  margin-top: 0.85rem;
+  padding: 0.8rem;
+  border: 1px dashed rgba(57, 255, 154, 0.4);
+  border-radius: 8px;
+  background: rgba(8, 8, 18, 0.5);
+}
+
+.toast,
+.toast strong,
+.toast div {
+  font-family: var(--font-body);
+}
+
+.toast small {
+  display: block;
+  font-family: var(--font-pixel);
+  font-size: 0.52rem;
+  color: var(--gold);
+  margin-bottom: 0.25rem;
+}
+
+.badge {
+  font-family: var(--font-body);
+}
+
 .file-preview {
   margin: 0 0 1rem;
   padding: 0.9rem;
@@ -431,8 +527,8 @@ img {
   display: flex;
   align-items: center;
   gap: 0.7rem;
-  font-family: var(--font-retro);
-  font-size: 1.4rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
   color: var(--gold);
 }
 
@@ -504,6 +600,8 @@ img {
 
 .toast small {
   display: block;
+  font-family: var(--font-pixel);
+  font-size: 0.52rem;
   color: var(--gold);
   margin-bottom: 0.25rem;
 }
@@ -512,9 +610,9 @@ footer {
   text-align: center;
   color: var(--muted);
   padding: 2rem 1rem 3rem;
-  font-family: var(--font-retro);
-  font-size: 1.25rem;
-  letter-spacing: 0.06em;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  letter-spacing: 0.02em;
 }
 
 @keyframes hop {

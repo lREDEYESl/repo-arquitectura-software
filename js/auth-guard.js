@@ -1,5 +1,5 @@
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
-import { collection, doc, getDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 import { auth, db } from "./firebase-config.js";
 
 export const ROOT = location.pathname.includes("/pages/") ? "../" : "./";
@@ -9,6 +9,10 @@ const GUARD_ROLES = {
   editor: ["editor", "admin"],
   admin: ["admin"],
 };
+
+export function normalizeEmail(email) {
+  return String(email || "").trim().toLowerCase();
+}
 
 export function showAchievement(title, message, type = "ok") {
   let stack = document.querySelector(".toast-stack");
@@ -31,8 +35,9 @@ export function setLoader(active) {
 
 function normalizeRole(rol) {
   if (!rol) return null;
-  if (rol === "superadmin") return "admin";
-  return rol;
+  const value = String(rol).trim().toLowerCase();
+  if (value === "superadmin") return "admin";
+  return value;
 }
 
 function roleFromData(data) {
@@ -40,15 +45,12 @@ function roleFromData(data) {
 }
 
 export async function getUserRoleByEmail(email) {
-  if (!email) return null;
+  const id = normalizeEmail(email);
+  if (!id) return null;
 
-  const byEmailId = await getDoc(doc(db, "roles_usuarios", email));
-  if (byEmailId.exists()) return roleFromData(byEmailId.data());
-
-  const snap = await getDocs(query(collection(db, "roles_usuarios"), where("email", "==", email)));
-  if (!snap.empty) return roleFromData(snap.docs[0].data());
-
-  return null;
+  const snap = await getDoc(doc(db, "roles_usuarios", id));
+  if (!snap.exists()) return null;
+  return roleFromData(snap.data());
 }
 
 export function loginUrl() {
