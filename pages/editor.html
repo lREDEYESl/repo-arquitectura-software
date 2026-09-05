@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Editor · Taller de artefactos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Press+Start+2P&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body data-page="editor">
+    <div class="scanlines"></div>
+    <header class="navbar">
+      <a class="brand" href="../index.html"><i class="fa-solid fa-shield-halved"></i> SoftArch RPG</a>
+      <button class="nav-toggle" aria-label="Abrir menú"><i class="fa-solid fa-bars"></i></button>
+      <nav class="nav-links">
+        <a href="../index.html">Inicio</a>
+        <a href="unidades.html">Unidades</a>
+        <a class="active" data-nav="editor" href="editor.html">Editor</a>
+        <a data-nav="superadmin" href="superadmin.html" hidden>Superadmin</a>
+        <a data-nav="auth" href="login.html">Acceso</a>
+      </nav>
+    </header>
+
+    <main class="page-wrap">
+      <p class="kicker">Zona protegida</p>
+      <h1>Taller de entregas</h1>
+      <p class="muted">Panel para roles <strong>editor</strong> y <strong>superadmin</strong>. Si no hay permiso, el guardia te manda al menú Start.</p>
+      <p id="editor-user" class="badge"><i class="fa-solid fa-id-badge"></i> Verificando rango...</p>
+
+      <section class="form-box">
+        <h2>Subir artefacto</h2>
+        <form id="form-entrega">
+          <label class="field">Unidad / mundo
+            <select name="unidad" required>
+              <option value="1">I · Fundamentos</option>
+              <option value="2">II · Modelado</option>
+              <option value="3">III · Integración</option>
+              <option value="4">IV · Frameworks</option>
+            </select>
+          </label>
+          <label class="field">Semana
+            <input name="semana" type="number" min="1" max="16" required placeholder="1" />
+          </label>
+          <label class="field">Archivo
+            <input name="archivo" type="file" required />
+          </label>
+          <button class="btn" type="submit">Guardar en el baúl</button>
+        </form>
+      </section>
+    </main>
+
+    <footer>Storage + Firestore · tareas_entregadas</footer>
+    <div id="loader" class="loader-overlay active"><div class="pixel-loader"></div></div>
+    <script type="module" src="../js/main.js"></script>
+  </body>
+</html>

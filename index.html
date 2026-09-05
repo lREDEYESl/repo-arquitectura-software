@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Arquitectura de Software · Perfil de Jugador</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Press+Start+2P&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body data-page="inicio">
+    <div class="scanlines"></div>
+    <header class="navbar">
+      <a class="brand" href="index.html"><i class="fa-solid fa-shield-halved"></i> SoftArch RPG</a>
+      <button class="nav-toggle" aria-label="Abrir menú"><i class="fa-solid fa-bars"></i></button>
+      <nav class="nav-links">
+        <a class="active" href="index.html">Inicio</a>
+        <a href="pages/unidades.html">Unidades</a>
+        <a data-nav="editor" href="pages/editor.html" hidden>Editor</a>
+        <a data-nav="superadmin" href="pages/superadmin.html" hidden>Superadmin</a>
+        <a data-nav="auth" href="pages/login.html">Acceso</a>
+      </nav>
+    </header>
+
+    <main class="page-wrap">
+      <section class="hero glass">
+        <div class="avatar" aria-hidden="true"><i class="fa-solid fa-user-ninja"></i></div>
+        <div>
+          <p class="kicker">Perfil de jugador</p>
+          <h1>Rogger Josue Palma Baldeón</h1>
+          <p>
+            Arquitecto en formación. Explora sistemas como si fueran mazmorras: cada capa es una sala,
+            cada contrato una llave y cada atributo de calidad un hechizo que hay que mantener en cooldown.
+          </p>
+          <div class="stats">
+            <span class="badge"><i class="fa-solid fa-graduation-cap"></i> Arquitectura de Software</span>
+            <span class="badge"><i class="fa-solid fa-heart"></i> HP académico 98/100</span>
+            <span class="badge"><i class="fa-solid fa-bolt"></i> Clase: Full-Stack Adventurer</span>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Misiones completadas</h2>
+        <div class="grid grid-3">
+          <article class="mission">
+            <p class="kicker">Misión A</p>
+            <h3><i class="fa-solid fa-microchip"></i> Interrupciones INT 00H en TASM</h3>
+            <p>
+              Implementación de servicios BIOS/DOS con la interrupción <strong>INT 00H</strong> y rutinas vecinas
+              en Turbo Assembler. El objetivo fue entender el puente entre hardware, vector de interrupciones
+              y software de usuario: cómo un programa cede el control a la CPU, captura flags y restaura el contexto.
+            </p>
+          </article>
+          <article class="mission">
+            <p class="kicker">Misión B</p>
+            <h3><i class="fa-solid fa-network-wired"></i> IoT en Cisco Packet Tracer</h3>
+            <p>
+              Diseño de una arquitectura de red con sensores, gateway, switch, firewall y servidor de aplicación.
+              Se modeló el flujo MQTT/HTTP, VLANs y políticas de acceso para que los dispositivos IoT dialoguen
+              sin exponer la LAN académica.
+            </p>
+          </article>
+          <article class="mission">
+            <p class="kicker">Misión C</p>
+            <h3><i class="fa-solid fa-diagram-project"></i> Diagramas UML</h3>
+            <p>
+              Elaboración de casos de uso, clases, secuencia y componentes para documentar decisiones estructurales.
+              El UML se usó como mapa del mundo: no como adorno, sino como contrato visual entre analistas y constructores.
+            </p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer>Curso de Arquitectura de Software · GitHub Pages · Vanilla JS</footer>
+    <div id="loader" class="loader-overlay"><div class="pixel-loader"></div></div>
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>

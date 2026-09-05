@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unidades · Mundos de Arquitectura</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Press+Start+2P&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body data-page="unidades">
+    <div class="scanlines"></div>
+    <header class="navbar">
+      <a class="brand" href="../index.html"><i class="fa-solid fa-shield-halved"></i> SoftArch RPG</a>
+      <button class="nav-toggle" aria-label="Abrir menú"><i class="fa-solid fa-bars"></i></button>
+      <nav class="nav-links">
+        <a href="../index.html">Inicio</a>
+        <a class="active" href="unidades.html">Unidades</a>
+        <a data-nav="editor" href="editor.html" hidden>Editor</a>
+        <a data-nav="superadmin" href="superadmin.html" hidden>Superadmin</a>
+        <a data-nav="auth" href="login.html">Acceso</a>
+      </nav>
+    </header>
+
+    <main class="page-wrap">
+      <p class="kicker">Mapa del curso</p>
+      <h1>Cuatro mundos por conquistar</h1>
+      <p class="muted">Cada nivel concentra teoría real del curso. Debajo verás las entregas leídas desde Firestore.</p>
+
+      <section class="level theory" id="nivel-1">
+        <p class="kicker">Nivel I · Santuario</p>
+        <h2>Fundamentos de Arquitectura de Software</h2>
+        <p>
+          La arquitectura de software es el conjunto de estructuras necesarias para razonar sobre un sistema:
+          elementos, relaciones entre ellos y propiedades de ambos. No se limita a un diagrama bonito: captura
+          decisiones tempranas que son costosas de revertir, define límites de módulos y establece cómo el
+          software cumplirá atributos de calidad como disponibilidad, seguridad, modificabilidad y desempeño.
+          Principios como separación de intereses, alta cohesión, bajo acoplamiento, encapsulamiento y
+          diseño dirigido por responsabilidad evitan que el sistema se convierta en un “boss” imposible de
+          mantener.
+        </p>
+        <p>
+          Un estilo arquitectónico (capas, cliente-servidor, pipes and filters, microservicios, event-driven,
+          hexagonal) describe una familia de sistemas con las mismas restricciones. Un patrón resuelve un
+          problema recurrente dentro de ese estilo: Broker, MVC, CQRS, Circuit Breaker o API Gateway.
+          Elegir estilo y patrón implica trade-offs: lo que ganas en escalabilidad puedes perderlo en
+          consistencia o complejidad operacional. El arquitecto documenta esas decisiones (ADRs) para que
+          el equipo no vuelva a pelear la misma batalla sin memoria histórica.
+        </p>
+        <h3>Entregas del nivel</h3>
+        <div class="tasks" id="tareas-unidad-1"></div>
+      </section>
+
+      <section class="level theory" id="nivel-2">
+        <p class="kicker">Nivel II · Forja</p>
+        <h2>Modelado POO, componentes, capas y UML</h2>
+        <p>
+          El modelado orientado a objetos traduce el dominio en tipos con estado y comportamiento. Clases,
+          interfaces, herencia y composición no son adornos de lenguaje: son herramientas para localizar el
+          cambio. Un componente bien diseñado expone un contrato estable y esconde su implementación.
+          La arquitectura en capas (presentación, aplicación, dominio, infraestructura) organiza esas
+          piezas para que las reglas de negocio no dependan de frameworks ni de detalles de persistencia.
+        </p>
+        <p>
+          UML sirve como lenguaje compartido: casos de uso para el perímetro funcional; diagramas de clases
+          para estructura; secuencia y comunicación para colaboración temporal; componentes y despliegue
+          para la vista de runtime. El error clásico es dibujar UML después de programar. El valor aparece
+          cuando el diagrama guía interfaces, paquetes y pruebas, y cuando se mantiene lo suficientemente
+          abstracto como para no romperse con cada refactor menor.
+        </p>
+        <h3>Entregas del nivel</h3>
+        <div class="tasks" id="tareas-unidad-2"></div>
+      </section>
+
+      <section class="level theory" id="nivel-3">
+        <p class="kicker">Nivel III · Puentes</p>
+        <h2>Comunicación, APIs e integración</h2>
+        <p>
+          Los sistemas reales casi nunca viven solos: conversan con pasarelas de pago, IoT, ERPs y clientes
+          móviles. Una API es el contrato de esa conversación. REST enfatiza recursos, verbos HTTP y
+          códigos de estado; GraphQL permite consultas selectivas; gRPC destaca en comunicación interna
+          de baja latencia. Independientemente del estilo, hay que versionar, autenticar, limitar tasa,
+          idempotencia y documentar esquemas (OpenAPI). El diseño de interfaces incluye tanto el contrato
+          técnico como la experiencia del consumidor: nombres predecibles, errores accionables y paginación.
+        </p>
+        <p>
+          La transmisión de datos exige pensar en formato (JSON, Protobuf, Avro), serialización, compresión
+          y semántica de entrega (at-most-once, at-least-once, exactly-once). Colas y buses desacoplan
+          productores y consumidores; webhooks y SSE cubren eventos hacia el borde. Integrar también es
+          fallar con dignidad: timeouts, reintentos con backoff, circuit breakers y DLQ evitan que un
+          servicio caído contagie a todo el reino.
+        </p>
+        <h3>Entregas del nivel</h3>
+        <div class="tasks" id="tareas-unidad-3"></div>
+      </section>
+
+      <section class="level theory" id="nivel-4">
+        <p class="kicker">Nivel IV · Ciudadela</p>
+        <h2>Frameworks, estándares y optimización</h2>
+        <p>
+          Un framework de arquitectura (TOGAF, C4, 4+1 de Kruchten, arc42) no escribe el código por ti:
+          organiza vistas, stakeholders y gobernanza. Los estándares —ISO/IEC 25010 para calidad, 12-Factor
+          para cloud, OWASP para seguridad, convenciones de logs y métricas— reducen la variabilidad inútil.
+          Las buenas prácticas incluyen infraestructura como código, pipelines CI/CD, feature flags,
+          observabilidad (trazas, métricas, logs) y pruebas de arquitectura (ArchUnit, fitness functions)
+          para que las reglas no se diluyan con el tiempo.
+        </p>
+        <p>
+          Optimizar no es “hacer más rápido a ciegas”. Primero se mide: cuellos de CPU, I/O, N+1, chatty
+          APIs, cold starts. Luego se aplican cachés, índices, asincronía, particionado y backpressure.
+          El arquitecto equilibra costo, complejidad y beneficio: una micro-optimización que rompe claridad
+          suele ser una trampa. El cierre del curso es convertir principios en un sistema operable,
+          documentado y listo para evolucionar sin reescribir el mapa cada semestre.
+        </p>
+        <h3>Entregas del nivel</h3>
+        <div class="tasks" id="tareas-unidad-4"></div>
+      </section>
+    </main>
+
+    <footer>Curso de Arquitectura de Software · Niveles I–IV</footer>
+    <div id="loader" class="loader-overlay"><div class="pixel-loader"></div></div>
+    <script type="module" src="../js/main.js"></script>
+  </body>
+</html>

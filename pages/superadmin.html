@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Superadmin · Libro del gremio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Press+Start+2P&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body data-page="superadmin">
+    <div class="scanlines"></div>
+    <header class="navbar">
+      <a class="brand" href="../index.html"><i class="fa-solid fa-shield-halved"></i> SoftArch RPG</a>
+      <button class="nav-toggle" aria-label="Abrir menú"><i class="fa-solid fa-bars"></i></button>
+      <nav class="nav-links">
+        <a href="../index.html">Inicio</a>
+        <a href="unidades.html">Unidades</a>
+        <a data-nav="editor" href="editor.html" hidden>Editor</a>
+        <a class="active" data-nav="superadmin" href="superadmin.html">Superadmin</a>
+        <a data-nav="auth" href="login.html">Acceso</a>
+      </nav>
+    </header>
+
+    <main class="page-wrap">
+      <p class="kicker">Cámara del maestro</p>
+      <h1>Solicitudes de acceso</h1>
+      <p class="muted">
+        Solo el rango <strong>superadmin</strong> puede abrir este libro. Aprueba o rechaza peticiones
+        guardadas en <code>solicitudes_acceso</code>. Los roles vivos viven en <code>roles_usuarios</code>
+        (documento = UID de Firebase Auth).
+      </p>
+      <div id="lista-solicitudes" class="grid"></div>
+    </main>
+
+    <footer>Panel superadmin · Glassmorphism RPG</footer>
+    <div id="loader" class="loader-overlay active"><div class="pixel-loader"></div></div>
+    <script type="module" src="../js/main.js"></script>
+  </body>
+</html>
