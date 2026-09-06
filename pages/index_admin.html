@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Base del gremio · Perfil de Jugador</title>
+    <meta name="description" content="Zona staff: acceso directo al mapa de unidades y al taller de artefactos." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Roboto:wght@400;700&family=Press+Start+2P&display=swap" rel="stylesheet" />
@@ -26,27 +27,47 @@
     </header>
 
     <main class="page-wrap">
-      <section class="hero glass glass-card pixel-frame">
-        <div class="avatar" aria-hidden="true"><i class="fa-solid fa-user-ninja"></i></div>
-        <div>
-          <p class="kicker">Base del gremio</p>
+      <section class="hero glass glass-card pixel-frame character-card reveal">
+        <div class="character-portrait">
+          <div class="avatar" aria-hidden="true"><i class="fa-solid fa-user-ninja"></i></div>
+          <span class="portrait-ring" aria-hidden="true"></span>
+        </div>
+        <div class="character-info">
+          <p class="kicker hud-label">Base del gremio</p>
           <h1>Rogger Josue Palma Baldeón</h1>
-          <p>
+          <p class="class-line"><i class="fa-solid fa-bolt"></i> Clase: <strong>Full-Stack Adventurer</strong> · Programa: <strong>Arquitectura de Software</strong></p>
+          <p class="bio">
             Zona protegida para editores y administradores. Desde aquí puedes saltar al mapa de unidades
             o al taller de artefactos sin cruzar el menú público.
           </p>
+
+          <div class="stat-block">
+            <div class="stat-row">
+              <span class="stat-name"><i class="fa-solid fa-heart"></i> HP académico</span>
+              <div class="hp-track" role="img" aria-label="HP académico: 98 de 100">
+                <span class="hp-fill" data-target="98"></span>
+              </div>
+              <span class="stat-value"><span class="counter" data-counter data-target="98">0</span>/100</span>
+            </div>
+          </div>
+
           <div class="stats">
             <span class="badge"><i class="fa-solid fa-graduation-cap"></i> Arquitectura de Software</span>
             <span class="badge"><i class="fa-solid fa-heart"></i> HP académico 98/100</span>
             <span class="badge"><i class="fa-solid fa-bolt"></i> Clase: Full-Stack Adventurer</span>
           </div>
+
+          <div class="cta-row">
+            <a class="btn btn-cyan" href="unidades_admin.html"><i class="fa-solid fa-layer-group"></i> Mapa de unidades</a>
+            <a class="btn btn-purple" href="editor.html"><i class="fa-solid fa-vault"></i> Taller de artefactos</a>
+          </div>
         </div>
       </section>
 
-      <section>
+      <section class="reveal">
         <h2>Misiones completadas</h2>
         <div class="grid grid-3">
-          <article class="mission pixel-frame">
+          <article class="mission pixel-frame reveal">
             <p class="kicker">Misión A</p>
             <h3><i class="fa-solid fa-microchip"></i> Interrupciones INT 00H en TASM</h3>
             <p>
@@ -54,8 +75,12 @@
               en Turbo Assembler. El objetivo fue entender el puente entre hardware, vector de interrupciones
               y software de usuario: cómo un programa cede el control a la CPU, captura flags y restaura el contexto.
             </p>
+            <div class="tag-row">
+              <span class="tag-chip">TASM</span>
+              <span class="tag-chip">BIOS/DOS</span>
+            </div>
           </article>
-          <article class="mission pixel-frame">
+          <article class="mission pixel-frame reveal">
             <p class="kicker">Misión B</p>
             <h3><i class="fa-solid fa-network-wired"></i> IoT en Cisco Packet Tracer</h3>
             <p>
@@ -63,14 +88,22 @@
               Se modeló el flujo MQTT/HTTP, VLANs y políticas de acceso para que los dispositivos IoT dialoguen
               sin exponer la LAN académica.
             </p>
+            <div class="tag-row">
+              <span class="tag-chip">Cisco Packet Tracer</span>
+              <span class="tag-chip">VLANs</span>
+            </div>
           </article>
-          <article class="mission pixel-frame">
+          <article class="mission pixel-frame reveal">
             <p class="kicker">Misión C</p>
             <h3><i class="fa-solid fa-diagram-project"></i> Diagramas UML</h3>
             <p>
               Elaboración de casos de uso, clases, secuencia y componentes para documentar decisiones estructurales.
               El UML se usó como mapa del mundo: no como adorno, sino como contrato visual entre analistas y constructores.
             </p>
+            <div class="tag-row">
+              <span class="tag-chip">UML</span>
+              <span class="tag-chip">Componentes</span>
+            </div>
           </article>
         </div>
       </section>
