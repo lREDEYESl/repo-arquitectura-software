@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Editor · Taller de artefactos</title>
+    <meta name="description" content="Sube las entregas de misión al baúl del gremio (Firebase Storage + Firestore)." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Roboto:wght@400;700&family=Press+Start+2P&display=swap" rel="stylesheet" />
@@ -31,8 +32,9 @@
       <p class="muted">Solo rangos <strong>editor</strong> y <strong>admin</strong>. El guardia verifica <code>roles_usuarios</code> por correo.</p>
       <p id="editor-user" class="badge"><i class="fa-solid fa-id-badge"></i> Verificando rango...</p>
 
-      <section class="form-box pixel-frame">
-        <h2>Subir artefacto</h2>
+      <section class="form-box pixel-frame reveal">
+        <h2><i class="fa-solid fa-vault"></i> Subir artefacto</h2>
+        <p class="muted">Cada artefacto queda asociado a una unidad y una semana, y aparece de inmediato en la bitácora pública de misiones.</p>
         <form id="form-entrega">
           <label class="field">Unidad / mundo
             <select name="unidad" required>
@@ -59,7 +61,7 @@
               <span id="preview-name"></span>
             </div>
           </div>
-          <button class="btn" type="submit">Guardar en el baúl</button>
+          <button class="btn" type="submit"><i class="fa-solid fa-box-archive"></i> Guardar en el baúl</button>
         </form>
       </section>
     </main>
