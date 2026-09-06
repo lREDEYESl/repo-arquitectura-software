@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Acceso · Menú Start</title>
+    <meta name="description" content="Accede al gremio de SoftArch RPG con Google o solicita tu ingreso." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Roboto:wght@400;700&family=Press+Start+2P&display=swap" rel="stylesheet" />
@@ -29,14 +30,18 @@
       <p id="login-status" class="muted">Sin sesión. Elige un héroe con Google o solicita acceso.</p>
 
       <div class="grid grid-2">
-        <section class="form-box pixel-frame">
-          <h2>Continuar partida</h2>
-          <p class="muted">Inicia sesión con Google para entrar a la base del gremio según tu rango en <code>roles_usuarios</code>.</p>
+        <section class="form-box pixel-frame reveal">
+          <h2><i class="fa-solid fa-gamepad"></i> Continuar partida</h2>
+          <p class="muted">
+            Inicia sesión con Google para entrar a la base del gremio según tu rango en
+            <code>roles_usuarios</code>. Si ya tienes rango asignado, esta es la vía rápida.
+          </p>
           <button id="btn-google" class="btn" type="button"><i class="fa-brands fa-google"></i> Login con Google</button>
         </section>
 
-        <section class="form-box pixel-frame">
-          <h2>Solicitar acceso al gremio</h2>
+        <section class="form-box pixel-frame reveal">
+          <h2><i class="fa-solid fa-scroll"></i> Solicitar acceso al gremio</h2>
+          <p class="muted">Aún sin rango asignado. Describe por qué necesitas entrar al editor o al panel y el maestro del gremio revisará tu petición.</p>
           <form id="form-solicitud">
             <label class="field">Nombre
               <input name="nombre" required placeholder="Tu nombre de jugador" />
@@ -47,7 +52,7 @@
             <label class="field">Motivo
               <textarea name="motivo" rows="4" required placeholder="¿Por qué debes entrar al editor o al panel?"></textarea>
             </label>
-            <button class="btn btn-cyan" type="submit">Enviar solicitud</button>
+            <button class="btn btn-cyan" type="submit"><i class="fa-solid fa-paper-plane"></i> Enviar solicitud</button>
           </form>
         </section>
       </div>
