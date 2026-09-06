@@ -25,37 +25,41 @@
     </header>
 
     <main class="page-wrap">
-      <p class="kicker">Menú Start</p>
-      <h1>Elige tu héroe</h1>
-      <p id="login-status" class="muted">Sin sesión. Elige un héroe con Google o solicita acceso.</p>
+      <section class="reveal">
+        <p class="kicker">Menú Start</p>
+        <h1>Elige tu héroe</h1>
+        <p id="login-status" class="muted">Sin sesión. Elige un héroe con Google o solicita acceso.</p>
+      </section>
 
-      <div class="grid grid-2">
-        <section class="form-box pixel-frame reveal">
-          <h2><i class="fa-solid fa-gamepad"></i> Continuar partida</h2>
-          <p class="muted">
-            Inicia sesión con Google para entrar a la base del gremio según tu rango en
-            <code>roles_usuarios</code>. Si ya tienes rango asignado, esta es la vía rápida.
-          </p>
-          <button id="btn-google" class="btn" type="button"><i class="fa-brands fa-google"></i> Login con Google</button>
-        </section>
+      <section class="reveal">
+        <div class="grid grid-2">
+          <div class="form-box pixel-frame reveal">
+            <h2><i class="fa-solid fa-gamepad"></i> Continuar partida</h2>
+            <p class="muted">
+              Inicia sesión con Google para entrar a la base del gremio según tu rango en
+              <code>roles_usuarios</code>. Si ya tienes rango asignado, esta es la vía rápida.
+            </p>
+            <button id="btn-google" class="btn" type="button"><i class="fa-brands fa-google"></i> Login con Google</button>
+          </div>
 
-        <section class="form-box pixel-frame reveal">
-          <h2><i class="fa-solid fa-scroll"></i> Solicitar acceso al gremio</h2>
-          <p class="muted">Aún sin rango asignado. Describe por qué necesitas entrar al editor o al panel y el maestro del gremio revisará tu petición.</p>
-          <form id="form-solicitud">
-            <label class="field">Nombre
-              <input name="nombre" required placeholder="Tu nombre de jugador" />
-            </label>
-            <label class="field">Correo
-              <input name="correo" type="email" required placeholder="correo@universidad.edu" />
-            </label>
-            <label class="field">Motivo
-              <textarea name="motivo" rows="4" required placeholder="¿Por qué debes entrar al editor o al panel?"></textarea>
-            </label>
-            <button class="btn btn-cyan" type="submit"><i class="fa-solid fa-paper-plane"></i> Enviar solicitud</button>
-          </form>
-        </section>
-      </div>
+          <div class="form-box pixel-frame reveal">
+            <h2><i class="fa-solid fa-scroll"></i> Solicitar acceso al gremio</h2>
+            <p class="muted">Aún sin rango asignado. Describe por qué necesitas entrar al editor o al panel y el maestro del gremio revisará tu petición.</p>
+            <form id="form-solicitud">
+              <label class="field">Nombre
+                <input name="nombre" required placeholder="Tu nombre de jugador" />
+              </label>
+              <label class="field">Correo
+                <input name="correo" type="email" required placeholder="correo@universidad.edu" />
+              </label>
+              <label class="field">Motivo
+                <textarea name="motivo" rows="4" required placeholder="¿Por qué debes entrar al editor o al panel?"></textarea>
+              </label>
+              <button class="btn btn-cyan" type="submit"><i class="fa-solid fa-paper-plane"></i> Enviar solicitud</button>
+            </form>
+          </div>
+        </div>
+      </section>
     </main>
 
     <footer>Zona de acceso · Firebase Auth</footer>
