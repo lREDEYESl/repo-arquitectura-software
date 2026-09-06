@@ -1,6 +1,6 @@
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
 import { auth } from "./firebase-config.js";
-import { ROOT, getUserRoleByEmail, initPageGuard, logoutPlayer } from "./auth-guard.js";
+import { ROOT, getUserRoleByEmail, homeForRole, initPageGuard, logoutPlayer } from "./auth-guard.js";
 
 function setHidden(el, hidden) {
   if (!el) return;
@@ -29,21 +29,25 @@ function bindNavbar() {
 
     if (!user) {
       setHidden(navAdmin, true);
+      setHidden(document.getElementById("nav-editor"), true);
       return;
     }
 
-    const rol = await getUserRoleByEmail(user.email.toLowerCase());
+    const emailClean = user.email.trim().toLowerCase();
+    const rol = await getUserRoleByEmail(emailClean);
+    const navEditor = document.getElementById("nav-editor");
 
     if (guard === "public" && (page === "inicio" || page === "unidades") && (rol === "admin" || rol === "editor")) {
-      location.href = page === "unidades" ? `${ROOT}pages/unidades_admin.html` : `${ROOT}pages/index_admin.html`;
+      location.href = page === "unidades" ? `${ROOT}pages/unidades_admin.html` : homeForRole(rol);
       return;
     }
 
     if (page === "login" && (rol === "admin" || rol === "editor")) {
-      location.href = `${ROOT}pages/index_admin.html`;
+      location.href = homeForRole(rol);
       return;
     }
 
+    setHidden(navEditor, !(rol === "admin" || rol === "editor"));
     setHidden(navAdmin, rol !== "admin");
   });
 }

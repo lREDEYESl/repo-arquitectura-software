@@ -33,28 +33,27 @@ export function setLoader(active) {
   if (overlay) overlay.classList.toggle("active", Boolean(active));
 }
 
-function normalizeRole(rol) {
-  if (!rol) return null;
-  const value = String(rol).trim().toLowerCase();
+function roleFromSnap(snap) {
+  if (!snap?.exists()) return null;
+  const raw = snap.data()?.rol ?? snap.data()?.role ?? null;
+  if (!raw) return null;
+  const value = String(raw).trim().toLowerCase();
   if (value === "superadmin") return "admin";
+  if (value === "admin" || value === "editor") return value;
   return value;
 }
 
-function roleFromData(data) {
-  return normalizeRole(data?.rol || data?.role || null);
-}
-
 export async function getUserRoleByEmail(email) {
-  const id = String(email || "").trim().toLowerCase();
-  if (!id) return null;
+  const emailClean = String(email || "").trim().toLowerCase();
+  if (!emailClean) return null;
 
   try {
-    const snap = await getDoc(doc(db, "roles_usuarios", id));
-    if (!snap.exists()) return null;
-    return roleFromData(snap.data());
+    const docSnap = await getDoc(doc(db, "roles_usuarios", emailClean));
+    if (!docSnap.exists()) return null;
+    return roleFromSnap(docSnap);
   } catch (error) {
-    console.error("No se pudo leer roles_usuarios/" + id, error);
-    throw error;
+    console.error("No se pudo leer roles_usuarios/" + emailClean, error);
+    return null;
   }
 }
 
@@ -63,9 +62,8 @@ export function loginUrl() {
 }
 
 export function homeForRole(rol) {
-  if (rol === "admin" || rol === "editor") {
-    return `${ROOT}pages/index_admin.html`;
-  }
+  if (rol === "admin") return `${ROOT}pages/index_admin.html`;
+  if (rol === "editor") return `${ROOT}pages/editor.html`;
   return `${ROOT}index.html`;
 }
 
@@ -78,13 +76,18 @@ export function requireRoles(allowedRoles = []) {
           location.href = loginUrl();
           return;
         }
-        const rol = await getUserRoleByEmail(user.email.toLowerCase());
+        const emailClean = user.email.trim().toLowerCase();
+        const rol = await getUserRoleByEmail(emailClean);
         if (!rol || !allowedRoles.includes(rol)) {
-          showAchievement("Permiso insuficiente", "Tu rango no puede cruzar esta puerta.", "error");
+          showAchievement(
+            "Acceso pendiente",
+            rol ? "Tu rango no puede cruzar esta puerta." : "Tu acceso está pendiente de aprobación del gremio.",
+            "error"
+          );
           location.href = rol ? homeForRole(rol) : loginUrl();
           return;
         }
-        resolve({ user, rol });
+        resolve({ user, rol, emailClean });
       } catch (error) {
         console.error("Error al verificar rol en roles_usuarios:", error);
         showAchievement("Error de gremio", "No se pudo verificar el rol en Firestore.", "error");
@@ -113,7 +116,8 @@ export function watchAuth(callback) {
     let rol = null;
     if (user) {
       try {
-        rol = await getUserRoleByEmail(user.email.toLowerCase());
+        const emailClean = user.email.trim().toLowerCase();
+        rol = await getUserRoleByEmail(emailClean);
       } catch (error) {
         console.error("Error al leer rol:", error);
         rol = null;

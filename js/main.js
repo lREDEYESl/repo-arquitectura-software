@@ -273,13 +273,18 @@ function initLogin() {
     setLoader(true);
     try {
       const result = await signInWithPopup(auth, googleProvider);
-      const rol = await getUserRoleByEmail(result.user.email.toLowerCase());
-      if (rol === "admin" || rol === "editor") {
+      const emailClean = result.user.email.trim().toLowerCase();
+      const rol = await getUserRoleByEmail(emailClean);
+      if (rol === "admin") {
         location.href = "index_admin.html";
         return;
       }
+      if (rol === "editor") {
+        location.href = "editor.html";
+        return;
+      }
       await signOut(auth);
-      alert("Error: No tienes rango en el gremio. Envía una solicitud de acceso primero.");
+      alert("Tu acceso está pendiente. El gremio aún no te asignó un rango.");
     } catch (error) {
       console.error("Error en login con Google:", error);
       showAchievement("Misión Fallida", "No se pudo completar el acceso con Google.", "error");
@@ -297,7 +302,7 @@ function initLogin() {
     }
     status.textContent = rol
       ? `Conectado: ${user.email} · rango ${rol}`
-      : `Conectado: ${user.email}. Tu rango aún no fue asignado.`;
+      : `Conectado: ${user.email}. Tu acceso está pendiente.`;
   });
 }
 
@@ -445,11 +450,11 @@ async function handleSolicitud(id, data, action, rol) {
       await deleteDoc(solicitudRef);
       showAchievement("Misión Cumplida", `${data.nombre} no entra al gremio.`);
     } else {
-      const correo = normalizeEmail(data.correo);
-      if (!correo) {
+      const emailClean = String(data.correo || "").trim().toLowerCase();
+      if (!emailClean) {
         throw new Error("La solicitud no tiene correo para usar como ID en roles_usuarios.");
       }
-      await setDoc(doc(db, "roles_usuarios", correo), { rol });
+      await setDoc(doc(db, "roles_usuarios", emailClean), { rol });
       await deleteDoc(solicitudRef);
       showAchievement("Misión Cumplida", `${data.nombre} queda como ${rol}.`);
     }
