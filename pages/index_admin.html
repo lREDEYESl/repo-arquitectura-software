@@ -14,11 +14,14 @@
   </head>
   <body data-page="index_admin" data-guard="staff">
     <div class="scanlines"></div>
+
     <header class="navbar">
       <a class="brand" href="index_admin.html"><i class="fa-solid fa-shield-halved"></i> SoftArch RPG</a>
       <button class="nav-toggle" aria-label="Abrir menú"><i class="fa-solid fa-bars"></i></button>
       <nav class="nav-links">
         <a class="active" href="index_admin.html">Inicio</a>
+        <a href="#bitacora">Bitácora</a>
+        <a href="#inventario">Inventario</a>
         <a href="unidades_admin.html">Unidades</a>
         <a id="nav-editor" href="editor.html">Panel Editor</a>
         <a id="nav-admin" href="superadmin.html" class="hidden">Gremio Admin</a>
@@ -27,18 +30,22 @@
     </header>
 
     <main class="page-wrap">
-      <section class="hero glass glass-card pixel-frame character-card reveal">
+
+      <!-- ═══════════════════ CHARACTER CARD ═══════════════════ -->
+      <section class="hero glass glass-card pixel-frame character-card reveal" aria-labelledby="char-name">
         <div class="character-portrait">
           <div class="avatar" aria-hidden="true"><i class="fa-solid fa-user-ninja"></i></div>
           <span class="portrait-ring" aria-hidden="true"></span>
         </div>
+
         <div class="character-info">
           <p class="kicker hud-label">Base del gremio</p>
-          <h1>Rogger Josue Palma Baldeón</h1>
+          <h1 id="char-name">Rogger Josue Palma Baldeón</h1>
           <p class="class-line"><i class="fa-solid fa-bolt"></i> Clase: <strong>Full-Stack Adventurer</strong> · Programa: <strong>Arquitectura de Software</strong></p>
+
           <p class="bio">
-            Zona protegida para editores y administradores. Desde aquí puedes saltar al mapa de unidades
-            o al taller de artefactos sin cruzar el menú público.
+            Zona protegida para editores y administradores. Desde aquí puedes revisar la bitácora, saltar al
+            mapa de unidades o abrir el taller de artefactos sin cruzar el menú público.
           </p>
 
           <div class="stat-block">
@@ -53,19 +60,26 @@
 
           <div class="stats">
             <span class="badge"><i class="fa-solid fa-graduation-cap"></i> Arquitectura de Software</span>
-            <span class="badge"><i class="fa-solid fa-heart"></i> HP académico 98/100</span>
-            <span class="badge"><i class="fa-solid fa-bolt"></i> Clase: Full-Stack Adventurer</span>
+            <span class="badge"><i class="fa-solid fa-bolt"></i> Full-Stack Adventurer</span>
+            <span class="badge"><i class="fa-solid fa-trophy"></i> <span class="counter" data-counter data-target="3">0</span>/3 misiones completadas</span>
           </div>
 
           <div class="cta-row">
+            <a class="btn" href="#bitacora"><i class="fa-solid fa-scroll"></i> Ver bitácora de misiones</a>
             <a class="btn btn-cyan" href="unidades_admin.html"><i class="fa-solid fa-layer-group"></i> Mapa de unidades</a>
             <a class="btn btn-purple" href="editor.html"><i class="fa-solid fa-vault"></i> Taller de artefactos</a>
           </div>
         </div>
       </section>
 
-      <section class="reveal">
-        <h2>Misiones completadas</h2>
+      <!-- ═══════════════════ QUEST LOG ═══════════════════ -->
+      <section id="bitacora" class="reveal">
+        <div class="section-heading">
+          <h2>Bitácora de misiones</h2>
+          <span class="quest-count-chip"><span class="counter" data-counter data-target="3">0</span>/3 completadas</span>
+        </div>
+        <p class="section-sub muted">Cada misión documenta un reto real resuelto durante el curso de Arquitectura de Software.</p>
+
         <div class="grid grid-3">
           <article class="mission pixel-frame reveal">
             <p class="kicker">Misión A</p>
@@ -78,8 +92,10 @@
             <div class="tag-row">
               <span class="tag-chip">TASM</span>
               <span class="tag-chip">BIOS/DOS</span>
+              <span class="tag-chip">Interrupciones</span>
             </div>
           </article>
+
           <article class="mission pixel-frame reveal">
             <p class="kicker">Misión B</p>
             <h3><i class="fa-solid fa-network-wired"></i> IoT en Cisco Packet Tracer</h3>
@@ -90,9 +106,12 @@
             </p>
             <div class="tag-row">
               <span class="tag-chip">Cisco Packet Tracer</span>
+              <span class="tag-chip">MQTT/HTTP</span>
               <span class="tag-chip">VLANs</span>
+              <span class="tag-chip">Firewall</span>
             </div>
           </article>
+
           <article class="mission pixel-frame reveal">
             <p class="kicker">Misión C</p>
             <h3><i class="fa-solid fa-diagram-project"></i> Diagramas UML</h3>
@@ -101,10 +120,95 @@
               El UML se usó como mapa del mundo: no como adorno, sino como contrato visual entre analistas y constructores.
             </p>
             <div class="tag-row">
-              <span class="tag-chip">UML</span>
+              <span class="tag-chip">Casos de uso</span>
+              <span class="tag-chip">Clases</span>
+              <span class="tag-chip">Secuencia</span>
               <span class="tag-chip">Componentes</span>
             </div>
           </article>
+        </div>
+      </section>
+
+      <!-- ═══════════════════ INVENTORY ═══════════════════ -->
+      <section id="inventario" class="reveal">
+        <div class="section-heading">
+          <h2>Inventario</h2>
+        </div>
+        <p class="section-sub muted">Herramientas y tecnologías usadas para construir y documentar las misiones de este gremio.</p>
+
+        <div class="inventory-grid">
+          <div class="inventory-category pixel-frame reveal">
+            <h3><i class="fa-solid fa-code"></i> Frontend</h3>
+            <ul class="inventory-list">
+              <li class="inventory-chip" data-rarity="epic"><i class="fa-brands fa-html5"></i> HTML5</li>
+              <li class="inventory-chip" data-rarity="epic"><i class="fa-brands fa-css3-alt"></i> CSS3</li>
+              <li class="inventory-chip" data-rarity="legendary"><i class="fa-brands fa-js"></i> JavaScript (Vanilla)</li>
+              <li class="inventory-chip" data-rarity="common"><i class="fa-solid fa-icons"></i> Font Awesome</li>
+              <li class="inventory-chip" data-rarity="common"><i class="fa-solid fa-font"></i> Google Fonts</li>
+            </ul>
+          </div>
+
+          <div class="inventory-category pixel-frame reveal">
+            <h3><i class="fa-solid fa-server"></i> Backend &amp; despliegue</h3>
+            <ul class="inventory-list">
+              <li class="inventory-chip" data-rarity="epic"><i class="fa-solid fa-fire"></i> Firebase Authentication</li>
+              <li class="inventory-chip" data-rarity="epic"><i class="fa-solid fa-database"></i> Firebase Firestore</li>
+              <li class="inventory-chip" data-rarity="epic"><i class="fa-solid fa-box-archive"></i> Firebase Storage</li>
+              <li class="inventory-chip" data-rarity="common"><i class="fa-brands fa-github"></i> GitHub Pages</li>
+            </ul>
+          </div>
+
+          <div class="inventory-category pixel-frame reveal">
+            <h3><i class="fa-solid fa-network-wired"></i> Redes &amp; infraestructura</h3>
+            <ul class="inventory-list">
+              <li class="inventory-chip" data-rarity="rare"><i class="fa-solid fa-diagram-project"></i> Cisco Packet Tracer</li>
+              <li class="inventory-chip" data-rarity="common"><i class="fa-solid fa-tower-broadcast"></i> MQTT / HTTP</li>
+              <li class="inventory-chip" data-rarity="common"><i class="fa-solid fa-shield-halved"></i> VLANs &amp; Firewalls</li>
+            </ul>
+          </div>
+
+          <div class="inventory-category pixel-frame reveal">
+            <h3><i class="fa-solid fa-scroll"></i> Bajo nivel &amp; modelado</h3>
+            <ul class="inventory-list">
+              <li class="inventory-chip" data-rarity="legendary"><i class="fa-solid fa-microchip"></i> Turbo Assembler (TASM)</li>
+              <li class="inventory-chip" data-rarity="rare"><i class="fa-solid fa-diagram-project"></i> UML</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════════ ACHIEVEMENTS ═══════════════════ -->
+      <section class="reveal">
+        <div class="section-heading">
+          <h2>Logros desbloqueados</h2>
+        </div>
+        <div class="achievements-row">
+          <div class="trophy-card pixel-frame reveal">
+            <span class="trophy-icon"><i class="fa-solid fa-microchip"></i></span>
+            <h3>Arquitecto de interrupciones</h3>
+            <p class="muted">Dominó la interrupción INT 00H y rutinas BIOS/DOS en TASM.</p>
+          </div>
+          <div class="trophy-card pixel-frame reveal">
+            <span class="trophy-icon"><i class="fa-solid fa-network-wired"></i></span>
+            <h3>Guardián de la red IoT</h3>
+            <p class="muted">Diseñó una arquitectura IoT completa en Cisco Packet Tracer.</p>
+          </div>
+          <div class="trophy-card pixel-frame reveal">
+            <span class="trophy-icon"><i class="fa-solid fa-diagram-project"></i></span>
+            <h3>Cartógrafo UML</h3>
+            <p class="muted">Documentó el sistema con casos de uso, clases, secuencia y componentes.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════════ SYSTEM LOG / STAFF NOTES ═══════════════════ -->
+      <section class="reveal">
+        <div class="system-log pixel-frame">
+          <p class="kicker hud-label">Canal de comunicación</p>
+          <p class="placeholder-note">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            Canal de contacto pendiente de configuración — placeholder. Añade aquí correo, GitHub o LinkedIn cuando estén disponibles.
+          </p>
         </div>
       </section>
     </main>
