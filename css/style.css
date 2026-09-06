@@ -1,127 +1,788 @@
-<!DOCTYPE html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Unidades · Mundos de Arquitectura</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Roboto:wght@400;700&family=Press+Start+2P&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-    <link rel="stylesheet" href="../css/style.css" />
-    <link rel="icon" type="image/png" href="../assets/favicon.png" />
-  </head>
-  <body data-page="unidades" data-guard="public">
-    <div class="scanlines"></div>
-    <header class="navbar">
-      <a class="brand" href="../index.html"><i class="fa-solid fa-shield-halved"></i> SoftArch RPG</a>
-      <button class="nav-toggle" aria-label="Abrir menú"><i class="fa-solid fa-bars"></i></button>
-      <nav class="nav-links">
-        <a href="../index.html">Inicio</a>
-        <a class="active" href="unidades.html">Unidades</a>
-        <a href="login.html">Acceso</a>
-      </nav>
-    </header>
+:root {
+  --bg: #0f0f1b;
+  --bg-elevated: #16162a;
+  --glass: rgba(22, 22, 42, 0.58);
+  --glass-border: rgba(167, 139, 250, 0.28);
+  --neon-green: #39ff9a;
+  --neon-cyan: #3cf0ff;
+  --neon-purple: #c084fc;
+  --text: #e8e8f4;
+  --muted: #9aa0c3;
+  --danger: #ff5d7a;
+  --gold: #f5d76e;
+  --radius: 18px;
+  --shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+  --font-pixel: "Press Start 2P", system-ui, sans-serif;
+  --font-retro: "Press Start 2P", system-ui, sans-serif;
+  --font-body: Inter, Roboto, system-ui, sans-serif;
+}
 
-    <main class="page-wrap">
-      <p class="kicker">Mapa del curso</p>
-      <h1>Cuatro mundos por conquistar</h1>
-      <p class="muted">Cada nivel concentra teoría real del curso. Debajo verás las entregas leídas desde Firestore.</p>
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
-      <section class="level theory pixel-frame" id="nivel-1">
-        <p class="kicker">Nivel I · Santuario</p>
-        <h2>Fundamentos de Arquitectura de Software</h2>
-        <p>
-          La arquitectura de software es el conjunto de estructuras necesarias para razonar sobre un sistema:
-          elementos, relaciones entre ellos y propiedades de ambos. No se limita a un diagrama bonito: captura
-          decisiones tempranas que son costosas de revertir, define límites de módulos y establece cómo el
-          software cumplirá atributos de calidad como disponibilidad, seguridad, modificabilidad y desempeño.
-          Principios como separación de intereses, alta cohesión, bajo acoplamiento, encapsulamiento y
-          diseño dirigido por responsabilidad evitan que el sistema se convierta en un “boss” imposible de
-          mantener.
-        </p>
-        <p>
-          Un estilo arquitectónico (capas, cliente-servidor, pipes and filters, microservicios, event-driven,
-          hexagonal) describe una familia de sistemas con las mismas restricciones. Un patrón resuelve un
-          problema recurrente dentro de ese estilo: Broker, MVC, CQRS, Circuit Breaker o API Gateway.
-          Elegir estilo y patrón implica trade-offs: lo que ganas en escalabilidad puedes perderlo en
-          consistencia o complejidad operacional. El arquitecto documenta esas decisiones (ADRs) para que
-          el equipo no vuelva a pelear la misma batalla sin memoria histórica.
-        </p>
-        <h3>Entregas del nivel</h3>
-        <div class="tasks" id="tareas-unidad-1"></div>
-      </section>
+html {
+  scroll-behavior: smooth;
+}
 
-      <section class="level theory pixel-frame" id="nivel-2">
-        <p class="kicker">Nivel II · Forja</p>
-        <h2>Modelado POO, componentes, capas y UML</h2>
-        <p>
-          El modelado orientado a objetos traduce el dominio en tipos con estado y comportamiento. Clases,
-          interfaces, herencia y composición no son adornos de lenguaje: son herramientas para localizar el
-          cambio. Un componente bien diseñado expone un contrato estable y esconde su implementación.
-          La arquitectura en capas (presentación, aplicación, dominio, infraestructura) organiza esas
-          piezas para que las reglas de negocio no dependan de frameworks ni de detalles de persistencia.
-        </p>
-        <p>
-          UML sirve como lenguaje compartido: casos de uso para el perímetro funcional; diagramas de clases
-          para estructura; secuencia y comunicación para colaboración temporal; componentes y despliegue
-          para la vista de runtime. El error clásico es dibujar UML después de programar. El valor aparece
-          cuando el diagrama guía interfaces, paquetes y pruebas, y cuando se mantiene lo suficientemente
-          abstracto como para no romperse con cada refactor menor.
-        </p>
-        <h3>Entregas del nivel</h3>
-        <div class="tasks" id="tareas-unidad-2"></div>
-      </section>
+html,
+body,
+button,
+a,
+input,
+textarea,
+select,
+label,
+p,
+li,
+span,
+small,
+strong,
+div,
+footer,
+header,
+nav {
+  font-family: var(--font-body);
+}
 
-      <section class="level theory pixel-frame" id="nivel-3">
-        <p class="kicker">Nivel III · Puentes</p>
-        <h2>Comunicación, APIs e integración</h2>
-        <p>
-          Los sistemas reales casi nunca viven solos: conversan con pasarelas de pago, IoT, ERPs y clientes
-          móviles. Una API es el contrato de esa conversación. REST enfatiza recursos, verbos HTTP y
-          códigos de estado; GraphQL permite consultas selectivas; gRPC destaca en comunicación interna
-          de baja latencia. Independientemente del estilo, hay que versionar, autenticar, limitar tasa,
-          idempotencia y documentar esquemas (OpenAPI). El diseño de interfaces incluye tanto el contrato
-          técnico como la experiencia del consumidor: nombres predecibles, errores accionables y paginación.
-        </p>
-        <p>
-          La transmisión de datos exige pensar en formato (JSON, Protobuf, Avro), serialización, compresión
-          y semántica de entrega (at-most-once, at-least-once, exactly-once). Colas y buses desacoplan
-          productores y consumidores; webhooks y SSE cubren eventos hacia el borde. Integrar también es
-          fallar con dignidad: timeouts, reintentos con backoff, circuit breakers y DLQ evitan que un
-          servicio caído contagie a todo el reino.
-        </p>
-        <h3>Entregas del nivel</h3>
-        <div class="tasks" id="tareas-unidad-3"></div>
-      </section>
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font-body);
+  color: var(--text);
+  background-color: #0f0f1b;
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(192, 132, 252, 0.16), transparent 55%),
+    radial-gradient(900px 500px at 100% 0%, rgba(60, 240, 255, 0.1), transparent 45%),
+    linear-gradient(180deg, #0f0f1b 0%, #0c0c16 100%);
+  background-attachment: fixed;
+  image-rendering: auto;
+}
 
-      <section class="level theory pixel-frame" id="nivel-4">
-        <p class="kicker">Nivel IV · Ciudadela</p>
-        <h2>Frameworks, estándares y optimización</h2>
-        <p>
-          Un framework de arquitectura (TOGAF, C4, 4+1 de Kruchten, arc42) no escribe el código por ti:
-          organiza vistas, stakeholders y gobernanza. Los estándares —ISO/IEC 25010 para calidad, 12-Factor
-          para cloud, OWASP para seguridad, convenciones de logs y métricas— reducen la variabilidad inútil.
-          Las buenas prácticas incluyen infraestructura como código, pipelines CI/CD, feature flags,
-          observabilidad (trazas, métricas, logs) y pruebas de arquitectura (ArchUnit, fitness functions)
-          para que las reglas no se diluyan con el tiempo.
-        </p>
-        <p>
-          Optimizar no es “hacer más rápido a ciegas”. Primero se mide: cuellos de CPU, I/O, N+1, chatty
-          APIs, cold starts. Luego se aplican cachés, índices, asincronía, particionado y backpressure.
-          El arquitecto equilibra costo, complejidad y beneficio: una micro-optimización que rompe claridad
-          suele ser una trampa. El cierre del curso es convertir principios en un sistema operable,
-          documentado y listo para evolucionar sin reescribir el mapa cada semestre.
-        </p>
-        <h3>Entregas del nivel</h3>
-        <div class="tasks" id="tareas-unidad-4"></div>
-      </section>
-    </main>
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.55), transparent 85%);
+  z-index: 0;
+}
 
-    <footer>Curso de Arquitectura de Software · Niveles I–IV</footer>
-    <div id="loader" class="loader-overlay"><div class="pixel-loader"></div></div>
-    <script src="../js/rpg-effects.js" defer></script>
-    <script type="module" src="../js/navbar.js"></script>
-    <script type="module" src="../js/main.js"></script>
-  </body>
-</html>
+h1,
+h2 {
+  font-family: var(--font-pixel);
+  line-height: 1.55;
+  letter-spacing: 1px;
+}
+
+h1 {
+  font-size: clamp(1.05rem, 2.4vw, 1.55rem);
+}
+
+h2 {
+  font-size: clamp(0.78rem, 1.8vw, 1.05rem);
+}
+
+h3 {
+  font-family: var(--font-pixel);
+  font-size: clamp(0.72rem, 1.6vw, 0.92rem);
+  letter-spacing: 0.04em;
+  line-height: 1.55;
+  color: var(--gold);
+  margin: 0.35rem 0 0.7rem;
+}
+
+p,
+li,
+label,
+input,
+textarea,
+select,
+button {
+  font-family: var(--font-body);
+}
+
+code {
+  font-family: var(--font-body);
+  font-size: 0.92em;
+  color: var(--neon-green);
+  text-shadow: 0 0 8px rgba(57, 255, 154, 0.35);
+}
+
+a {
+  color: var(--neon-cyan);
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+}
+
+.scanlines {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.015),
+    rgba(255, 255, 255, 0.015) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+}
+
+.page-wrap {
+  position: relative;
+  z-index: 1;
+  width: min(1120px, calc(100% - 2rem));
+  margin: 0 auto 4rem;
+}
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1.1rem;
+  margin: 0.85rem auto 1.5rem;
+  width: min(1120px, calc(100% - 2rem));
+  border: 1px solid var(--glass-border);
+  border-radius: 6px;
+  background: var(--glass);
+  backdrop-filter: blur(16px);
+  box-shadow:
+    0 0 0 2px #0f0f1b,
+    0 0 0 3px rgba(57, 255, 154, 0.55),
+    var(--shadow);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  color: var(--text);
+  font-family: var(--font-pixel);
+  font-size: 0.62rem;
+  line-height: 1.4;
+}
+
+.brand i {
+  color: var(--neon-green);
+  text-shadow: 0 0 12px var(--neon-green);
+}
+
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+[hidden],
+.hidden {
+  display: none !important;
+}
+
+.nav-links a,
+.nav-links button {
+  color: var(--text);
+  padding: 0.45rem 0.75rem;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  letter-spacing: 0.02em;
+}
+
+.nav-links button {
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.nav-links a:hover,
+.nav-links a.active,
+.nav-links button:hover {
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+  box-shadow: 0 0 16px rgba(60, 240, 255, 0.25);
+}
+
+.nav-toggle {
+  display: none;
+  background: transparent;
+  color: var(--neon-green);
+  border: 1px solid var(--neon-green);
+  border-radius: 10px;
+  padding: 0.4rem 0.65rem;
+}
+
+.glass,
+.glass-card,
+.card,
+.panel,
+.mission,
+.level,
+.form-box,
+.quest-card {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  backdrop-filter: blur(16px);
+  box-shadow: var(--shadow);
+}
+
+.pixel-frame {
+  box-shadow:
+    0 0 0 2px #0f0f1b,
+    0 0 0 4px rgba(60, 240, 255, 0.35),
+    0 0 28px rgba(192, 132, 252, 0.18);
+}
+
+.hero,
+.card,
+.panel,
+.mission,
+.level,
+.form-box {
+  padding: 1.4rem;
+}
+
+.level {
+  margin-top: 1.1rem;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 1.4rem;
+  align-items: center;
+}
+
+.avatar {
+  width: 160px;
+  height: 160px;
+  border-radius: 24px;
+  display: grid;
+  place-items: center;
+  font-size: 4rem;
+  background:
+    linear-gradient(160deg, rgba(57, 255, 154, 0.2), rgba(192, 132, 252, 0.18));
+  border: 2px solid var(--neon-green);
+  box-shadow: 0 0 24px rgba(57, 255, 154, 0.28);
+}
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.8rem;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid rgba(57, 255, 154, 0.4);
+  color: var(--neon-green);
+  font-size: 0.85rem;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.mission:hover,
+.level {
+  margin-top: 1.1rem;
+}
+
+.level:hover,
+.card:hover {
+  transform: translateY(-4px);
+  border-color: var(--neon-purple);
+  box-shadow: 0 0 24px rgba(192, 132, 252, 0.22);
+  transition: 0.25s ease;
+}
+
+.kicker {
+  color: var(--neon-cyan);
+  font-family: var(--font-pixel);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.62rem;
+  margin-bottom: 0.4rem;
+}
+
+a.btn {
+  font-family: var(--font-pixel);
+}
+
+.btn {
+  appearance: none;
+  cursor: pointer;
+  border: 3px solid var(--neon-green);
+  background: linear-gradient(180deg, #1a1a33, #121226);
+  color: var(--neon-green);
+  padding: 0.72rem 1rem;
+  border-radius: 4px;
+  font-family: var(--font-pixel);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow: inset 0 -4px 0 rgba(57, 255, 154, 0.25), 0 0 14px rgba(57, 255, 154, 0.15);
+  transition: 0.12s steps(2, end);
+}
+
+.btn:hover {
+  color: #05140d;
+  background: var(--neon-green);
+  box-shadow: 0 0 22px rgba(57, 255, 154, 0.45);
+  transform: translateY(2px);
+}
+
+.btn-cyan {
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+}
+
+.btn-cyan:hover {
+  background: var(--neon-cyan);
+  color: #062026;
+}
+
+.btn-purple {
+  border-color: var(--neon-purple);
+  color: var(--neon-purple);
+}
+
+.btn-purple:hover {
+  background: var(--neon-purple);
+  color: #1a0b24;
+}
+
+.btn-danger {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.btn-danger:hover {
+  background: var(--danger);
+  color: #1a0610;
+}
+
+.field {
+  display: grid;
+  gap: 0.4rem;
+  margin-bottom: 0.9rem;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--neon-cyan);
+}
+
+.field input,
+.field textarea,
+.field select {
+  width: 100%;
+  padding: 0.8rem 0.9rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(8, 8, 18, 0.7);
+  color: var(--text);
+}
+
+.theory p {
+  line-height: 1.75;
+}
+
+.tasks {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  background: rgba(8, 8, 18, 0.45);
+  min-height: 72px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.week-row {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.week-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.quest-card {
+  padding: 1rem 1.1rem;
+  border-color: rgba(60, 240, 255, 0.28);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.quest-card > p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.quest-card .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  margin-top: auto;
+}
+
+.quest-thumb-wrap {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  max-height: 240px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #0b0b14;
+  border: 1px solid rgba(60, 240, 255, 0.38);
+  box-shadow:
+    inset 0 0 28px rgba(0, 0, 0, 0.62),
+    0 0 16px rgba(60, 240, 255, 0.18),
+    0 0 0 1px rgba(192, 132, 252, 0.12);
+}
+
+.quest-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  background: transparent;
+  margin: 0;
+}
+
+.quest-viewer {
+  margin: 0.5rem 0 0.9rem;
+  border: 1px solid rgba(192, 132, 252, 0.35);
+  border-radius: 8px;
+  background: rgba(8, 8, 18, 0.55);
+  padding: 0.55rem 0.7rem;
+}
+
+.quest-viewer summary {
+  cursor: pointer;
+  font-family: var(--font-body);
+  color: var(--neon-cyan);
+  list-style: none;
+}
+
+.quest-viewer iframe {
+  width: 100%;
+  min-height: 320px;
+  margin-top: 0.6rem;
+  border: 2px solid var(--neon-purple);
+  background: #0c0c16;
+}
+
+.quest-admin {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.edit-form {
+  margin-top: 0.85rem;
+  padding: 0.8rem;
+  border: 1px dashed rgba(57, 255, 154, 0.4);
+  border-radius: 8px;
+  background: rgba(8, 8, 18, 0.5);
+}
+
+.toast,
+.toast strong,
+.toast div {
+  font-family: var(--font-body);
+}
+
+.toast small {
+  display: block;
+  font-family: var(--font-pixel);
+  font-size: 0.52rem;
+  color: var(--gold);
+  margin-bottom: 0.25rem;
+}
+
+.badge {
+  font-family: var(--font-body);
+}
+
+.file-preview {
+  margin: 0 0 1rem;
+  padding: 0.9rem;
+  border: 1px dashed rgba(57, 255, 154, 0.45);
+  border-radius: 8px;
+  background: rgba(8, 8, 18, 0.55);
+}
+
+.file-preview img {
+  max-height: 180px;
+  border: 2px solid var(--neon-cyan);
+  box-shadow: 0 0 18px rgba(60, 240, 255, 0.25);
+  image-rendering: pixelated;
+}
+
+.preview-file {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--gold);
+}
+
+.preview-file i {
+  font-size: 2rem;
+  color: var(--neon-purple);
+  text-shadow: 0 0 12px rgba(192, 132, 252, 0.5);
+}
+
+.file-chip {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.8rem;
+  align-items: center;
+  padding: 0.7rem 0.8rem;
+  margin-bottom: 0.55rem;
+  border: 1px solid rgba(60, 240, 255, 0.2);
+  border-radius: 8px;
+}
+
+.loader-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  place-items: center;
+  background: rgba(8, 8, 18, 0.72);
+  z-index: 40;
+  backdrop-filter: blur(8px);
+}
+
+.loader-overlay.active {
+  display: grid;
+}
+
+.pixel-loader {
+  width: 72px;
+  height: 72px;
+  image-rendering: pixelated;
+  background:
+    linear-gradient(var(--neon-green), var(--neon-green)) 0 0 / 18px 18px no-repeat,
+    linear-gradient(var(--neon-cyan), var(--neon-cyan)) 27px 18px / 18px 18px no-repeat,
+    linear-gradient(var(--neon-purple), var(--neon-purple)) 54px 36px / 18px 18px no-repeat;
+  animation: hop 0.7s steps(3, end) infinite;
+}
+
+.toast-stack {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 60;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.toast {
+  min-width: min(340px, calc(100vw - 2rem));
+  padding: 0.9rem 1rem;
+  border-radius: 14px;
+  border: 1px solid var(--neon-green);
+  background: rgba(15, 15, 27, 0.92);
+  box-shadow: 0 0 20px rgba(57, 255, 154, 0.25);
+  animation: pop 0.35s ease;
+}
+
+.toast.error {
+  border-color: var(--danger);
+  box-shadow: 0 0 20px rgba(255, 93, 122, 0.25);
+}
+
+.toast small {
+  display: block;
+  font-family: var(--font-pixel);
+  font-size: 0.52rem;
+  color: var(--gold);
+  margin-bottom: 0.25rem;
+}
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  padding: 2rem 1rem 3rem;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  letter-spacing: 0.02em;
+}
+
+@keyframes hop {
+  to {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes pop {
+  from {
+    transform: translateY(12px);
+    opacity: 0;
+  }
+}
+
+.rpg-enter {
+  animation: rpg-fade-up 0.58s ease both;
+}
+
+@keyframes rpg-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.rpg-typewriter::after {
+  content: "▌";
+  margin-left: 0.15em;
+  color: var(--neon-green);
+  text-shadow: 0 0 10px var(--neon-green);
+  animation: rpg-blink 0.72s steps(1, end) infinite;
+}
+
+.rpg-typewriter-done::after {
+  animation: none;
+  opacity: 0;
+}
+
+@keyframes rpg-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.rpg-ripple-host {
+  position: relative;
+  overflow: visible;
+}
+
+.rpg-ripple {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  border: 2px solid var(--neon-cyan);
+  box-shadow: 0 0 14px var(--neon-cyan), 0 0 28px rgba(57, 255, 154, 0.35);
+  transform: translate(-50%, -50%) scale(0.4);
+  animation: rpg-ripple 0.55s ease-out forwards;
+  z-index: 2;
+}
+
+@keyframes rpg-ripple {
+  to {
+    transform: translate(-50%, -50%) scale(9);
+    opacity: 0;
+  }
+}
+
+.rpg-hit {
+  animation: rpg-flash 0.2s steps(2, end);
+}
+
+@keyframes rpg-flash {
+  50% {
+    filter: brightness(1.4) drop-shadow(0 0 10px var(--neon-green));
+  }
+}
+
+@media (pointer: fine) {
+  html.rpg-cursor,
+  html.rpg-cursor a,
+  html.rpg-cursor button,
+  html.rpg-cursor .btn,
+  html.rpg-cursor .nav-links a {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20'%3E%3Crect x='8' y='2' width='4' height='16' fill='%2339ff9a'/%3E%3Crect x='2' y='8' width='16' height='4' fill='%233cf0ff'/%3E%3C/svg%3E") 10 10, crosshair;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rpg-enter,
+  .rpg-hit,
+  .rpg-ripple,
+  .rpg-typewriter::after {
+    animation: none;
+  }
+}
+
+@media (max-width: 860px) {
+  .hero,
+  .grid-3,
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .nav-toggle {
+    display: inline-flex;
+  }
+
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    left: 0;
+    padding: 0.7rem;
+    background: rgba(15, 15, 27, 0.96);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+  }
+
+  .navbar.open .nav-links {
+    display: grid;
+  }
+}
