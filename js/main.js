@@ -64,23 +64,15 @@ function storagePathFromUrl(url) {
   }
 }
 
-function formatFecha(value) {
-  if (!value) return "";
-  try {
-    const date = value.toDate ? value.toDate() : new Date(value);
-    if (Number.isNaN(date.getTime())) return "";
-    return date.toLocaleDateString("es-ES");
-  } catch {
-    return "";
-  }
-}
-
 function previewMarkup(file) {
   const url = fileUrl(file);
   const kind = fileKind(file.nombreArchivo || url);
   if (!url) return "";
   if (kind === "image") {
-    return `<img class="quest-thumb" src="${url}" alt="Vista previa de ${escapeHtml(file.nombreArchivo || "imagen")}" />`;
+    return `
+      <div class="quest-thumb-wrap">
+        <img class="quest-thumb" src="${url}" alt="Vista previa de la misión" />
+      </div>`;
   }
   const embedSrc =
     kind === "pdf"
@@ -120,18 +112,25 @@ function adminMarkup(file) {
 }
 
 function questCardMarkup(file) {
-  const fecha = formatFecha(file.fecha || file.creadoEn);
   const url = fileUrl(file);
   const storagePath = file.storagePath || storagePathFromUrl(url) || "";
   return `
     <article class="quest-card" data-id="${escapeHtml(file.id)}" data-url="${escapeHtml(url)}" data-storage="${escapeHtml(storagePath)}">
-      <p class="kicker">Semana ${escapeHtml(String(file.semana || "-"))}${fecha ? ` · ${escapeHtml(fecha)}` : ""}</p>
-      <h3><i class="fa-solid fa-scroll"></i> ${escapeHtml(file.nombreArchivo || "Archivo")}</h3>
       <p>${escapeHtml(file.descripcion || "Sin descripción de misión.")}</p>
       ${previewMarkup(file)}
-      ${url ? `<a class="btn btn-cyan" href="${url}" target="_blank" rel="noopener"><i class="fa-solid fa-download"></i> Descargar</a>` : ""}
+      ${url ? `<a class="btn btn-cyan" href="${url}" target="_blank" rel="noopener"><i class="fa-solid fa-download"></i> Descargar / Ver</a>` : ""}
       ${adminMarkup(file)}
     </article>`;
+}
+
+function groupByWeek(files) {
+  const weeks = new Map();
+  files.forEach((file) => {
+    const week = Number(file.semana) || 0;
+    if (!weeks.has(week)) weeks.set(week, []);
+    weeks.get(week).push(file);
+  });
+  return [...weeks.entries()].sort((a, b) => a[0] - b[0]);
 }
 
 async function renderTareas() {
@@ -163,7 +162,17 @@ async function renderTareas() {
         slot.innerHTML = "<p class='muted'>Aún no hay artefactos entregados en este nivel.</p>";
         return;
       }
-      slot.innerHTML = files.map(questCardMarkup).join("");
+      slot.innerHTML = groupByWeek(files)
+        .map(
+          ([week, items]) => `
+          <section class="week-row">
+            <p class="kicker">Semana ${escapeHtml(String(week || "-"))}</p>
+            <div class="week-grid">
+              ${items.map(questCardMarkup).join("")}
+            </div>
+          </section>`
+        )
+        .join("");
     });
 
     if (canManageTareas) bindTaskControls();
@@ -264,7 +273,7 @@ function initLogin() {
     setLoader(true);
     try {
       const result = await signInWithPopup(auth, googleProvider);
-      const rol = await getUserRoleByEmail(result.user.email);
+      const rol = await getUserRoleByEmail(result.user.email.toLowerCase());
       if (rol === "admin" || rol === "editor") {
         location.href = "index_admin.html";
         return;

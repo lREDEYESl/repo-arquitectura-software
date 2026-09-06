@@ -32,7 +32,7 @@ function bindNavbar() {
       return;
     }
 
-    const rol = await getUserRoleByEmail(user.email);
+    const rol = await getUserRoleByEmail(user.email.toLowerCase());
 
     if (guard === "public" && (page === "inicio" || page === "unidades") && (rol === "admin" || rol === "editor")) {
       location.href = page === "unidades" ? `${ROOT}pages/unidades_admin.html` : `${ROOT}pages/index_admin.html`;

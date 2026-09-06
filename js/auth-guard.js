@@ -45,12 +45,17 @@ function roleFromData(data) {
 }
 
 export async function getUserRoleByEmail(email) {
-  const id = normalizeEmail(email);
+  const id = String(email || "").trim().toLowerCase();
   if (!id) return null;
 
-  const snap = await getDoc(doc(db, "roles_usuarios", id));
-  if (!snap.exists()) return null;
-  return roleFromData(snap.data());
+  try {
+    const snap = await getDoc(doc(db, "roles_usuarios", id));
+    if (!snap.exists()) return null;
+    return roleFromData(snap.data());
+  } catch (error) {
+    console.error("No se pudo leer roles_usuarios/" + id, error);
+    throw error;
+  }
 }
 
 export function loginUrl() {
@@ -73,7 +78,7 @@ export function requireRoles(allowedRoles = []) {
           location.href = loginUrl();
           return;
         }
-        const rol = await getUserRoleByEmail(user.email);
+        const rol = await getUserRoleByEmail(user.email.toLowerCase());
         if (!rol || !allowedRoles.includes(rol)) {
           showAchievement("Permiso insuficiente", "Tu rango no puede cruzar esta puerta.", "error");
           location.href = rol ? homeForRole(rol) : loginUrl();
@@ -108,7 +113,7 @@ export function watchAuth(callback) {
     let rol = null;
     if (user) {
       try {
-        rol = await getUserRoleByEmail(user.email);
+        rol = await getUserRoleByEmail(user.email.toLowerCase());
       } catch (error) {
         console.error("Error al leer rol:", error);
         rol = null;
